@@ -1,0 +1,1711 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quỹ ăn trưa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F3EE; --surface:#FFFFFF; --surface-2:#FAF9F6; --ink:#1E2125; --ink-2:#4A4F57; --muted:#7A7F87;
+  --line:#E5E1D8; --line-2:#EFEBE3; --accent:#2E4A7A; --accent-soft:#C9D3E5; --accent-bg:#EEF1F7;
+  --chip:#F0EDE6; --shadow:0 1px 2px rgba(30,33,37,.05),0 4px 16px rgba(30,33,37,.05);
+  --nav-h:64px; --radius:12px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171A; --surface:#1D2024; --surface-2:#22262B; --ink:#ECEDEE; --ink-2:#C2C6CC; --muted:#8D939B;
+    --line:#2E3238; --line-2:#272B30; --accent:#9DB3DA; --accent-soft:#3A4B68; --accent-bg:#232B38;
+    --chip:#2A2E34; --shadow:none; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171A; --surface:#1D2024; --surface-2:#22262B; --ink:#ECEDEE; --ink-2:#C2C6CC; --muted:#8D939B;
+  --line:#2E3238; --line-2:#272B30; --accent:#9DB3DA; --accent-soft:#3A4B68; --accent-bg:#232B38;
+  --chip:#2A2E34; --shadow:none; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 16px)}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+
+/* Header */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;min-height:56px}
+.brand{font-weight:700;font-size:17px;letter-spacing:-.01em;flex:1;min-width:0}
+.brand small{display:block;font-weight:500;font-size:11.5px;color:var(--muted);letter-spacing:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.period{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--surface);height:38px}
+.period button{border:0;background:none;width:36px;height:36px;border-radius:999px;display:grid;place-items:center;color:var(--ink-2)}
+.period button:disabled{opacity:.3;cursor:default}
+.period select{border:0;background:none;font-weight:600;font-size:14px;appearance:none;-webkit-appearance:none;padding:0 2px;text-align:center;min-width:76px}
+.notice{font-size:12px;color:var(--ink-2);background:var(--chip);border-radius:8px;padding:8px 10px;margin:12px 0 0;display:flex;gap:8px;align-items:flex-start}
+.notice b{font-weight:600}
+.notice button{margin-left:auto;border:0;background:none;color:var(--accent);font-weight:600;font-size:12px;white-space:nowrap;padding:0}
+
+/* Sections */
+h1{font-size:20px;margin:20px 0 4px;letter-spacing:-.01em}
+h2{font-size:15px;margin:0;font-weight:600}
+.sec{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin:14px 0;box-shadow:var(--shadow)}
+.sec-h{display:flex;align-items:baseline;gap:8px;padding:14px 16px 10px}
+.sec-h .sub{color:var(--muted);font-size:12.5px}
+.sec-h .link{margin-left:auto;font-size:13px;color:var(--accent);font-weight:600;background:none;border:0;padding:0}
+.sec-b{padding:0 16px 16px}
+.hint{color:var(--muted);font-size:12.5px;margin:8px 0 0}
+
+/* Summary stats */
+.qs{list-style:none;margin:0;padding:0 16px 10px}
+.qs li{display:flex;align-items:center;gap:8px;min-height:32px;font-size:13.5px;border-bottom:1px dashed var(--line)}
+.qs li:nth-last-child(2){border-bottom:0}
+.qs li:last-child{border-bottom:0;border-top:1px solid var(--ink-2);font-weight:600;margin-top:2px}
+.qs .op{width:14px;color:var(--muted);font-weight:600;flex:none}
+.qs .k{color:var(--ink-2);flex:1;min-width:0}
+.qs li:last-child .k{color:var(--ink)}
+.qs .v{font-weight:600}
+.qs button{border:0;background:none;padding:0;color:var(--accent);font-size:12.5px;font-weight:500}
+@media (min-width:760px){
+  .qs{display:flex;padding:0;border-top:1px solid var(--line-2)}
+  .qs li{flex:1;flex-direction:column;align-items:flex-start;gap:0;padding:10px 14px;border:0;border-right:1px solid var(--line-2);margin:0!important;position:relative}
+  .qs li:last-child{border-top:0;border-right:0;background:var(--surface-2)}
+  .qs .op{position:absolute;left:-7px;top:50%;transform:translateY(-50%);background:var(--surface);width:14px;text-align:center;line-height:14px}
+  .qs li:first-child .op{display:none}
+  .qs .k{font-size:12px;color:var(--muted)}
+  .qs .v{font-size:16px}
+}
+
+.fund-sum{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;text-align:left;padding:12px 16px;border-radius:var(--radius)}
+.fund-sum:hover{background:var(--surface-2)}
+.fs-k{flex:1;min-width:0;font-weight:600;font-size:14.5px}
+.fs-k small{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+.fs-v{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.chev{color:var(--muted);transition:transform .15s;flex:none}
+.fund-sum[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.fund-sum[aria-expanded="true"]{border-radius:var(--radius) var(--radius) 0 0}
+#fundDetail .qs{border-top:1px solid var(--line-2);padding-top:4px}
+@media (min-width:760px){#fundDetail .qs{padding-top:0}}
+.mini-ctl{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.seg.sm{flex:0 0 auto;padding:2px}
+.seg.sm button{padding:4px 10px;font-size:12px;flex:0 0 auto}
+.hbar .cnt{display:block;font-size:11px;color:var(--muted)}
+
+.gst{display:block;font-size:10.5px;color:var(--muted);font-weight:400}
+.mstats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line-2);border-top:1px solid var(--line-2);margin-top:6px}
+.mstats>div{background:var(--surface);padding:10px 16px;display:flex;flex-direction:column}
+.mstats span{font-size:11.5px;color:var(--muted)}
+.mstats b{font-size:16px}
+.mstats small{font-size:11px;color:var(--muted)}
+@media (max-width:420px){.mstats>div{padding:10px 12px}}
+
+.lg{display:inline-block;vertical-align:middle;margin:0 4px 0 8px}
+.lg.bar{width:10px;height:10px;border-radius:2px;background:var(--accent)}
+.lg.line{width:14px;height:0;border-top:2px solid var(--ink)}
+
+/* Random */
+.icon-btn{border:1px solid var(--line);background:var(--surface);width:38px;height:38px;border-radius:999px;display:grid;place-items:center;color:var(--ink-2);flex:none}
+.eat{display:flex;align-items:center;gap:12px;padding:12px 16px}
+.eat .t{flex:1;min-width:0}
+.eat .t b{display:block;font-size:16px;line-height:1.3}
+.eat .t span{display:block}
+.eat-b{display:flex;gap:8px;flex:none}
+@media (max-width:480px){.eat{flex-wrap:wrap}.eat-b{width:100%}.eat-b .btn{flex:1}}
+.eat .t span{font-size:12.5px;color:var(--muted)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:999px;height:36px;padding:0 14px;font-size:13.5px;font-weight:600;white-space:nowrap}
+.btn.pri{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.btn:disabled{opacity:.4;cursor:default}
+.pick{margin:4px 16px 0;border:1px solid var(--line);border-radius:12px;padding:18px 16px;text-align:center;background:var(--surface-2)}
+.pick .lbl{font-size:12px;color:var(--muted);font-weight:500}
+.pick .nm{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:4px 0 2px;min-height:39px}
+.pick .nm.rolling{color:var(--muted)}
+.pick .meta{font-size:12.5px;color:var(--ink-2)}
+.pick .why{font-size:12px;color:var(--muted);margin-top:6px}
+.acts{display:flex;gap:8px;justify-content:center;padding:14px 16px 4px;flex-wrap:wrap}
+.rlabel{font-size:12px;color:var(--muted);font-weight:600;padding:14px 16px 6px;display:flex;justify-content:space-between;align-items:center}
+.rlabel button{border:0;background:none;color:var(--accent);font-size:12px;font-weight:600;padding:0 0 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:13px;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--accent-bg);border-color:var(--accent);color:var(--ink);font-weight:500}
+.chip small{color:var(--muted);font-size:11px;margin-left:3px}
+.toggle{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2);padding:10px 16px 0}
+.wx{margin:0 16px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2)}
+.wx-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--chip);color:var(--ink-2)}
+.wx-ic.sm{width:40px;height:40px;border-radius:10px}
+.wx-rain .wx-ic,.wx-ic.wx-rain,.wx-storm .wx-ic,.wx-ic.wx-storm{background:var(--accent-bg);color:var(--accent)}
+.wx-hot .wx-ic,.wx-ic.wx-hot{background:#F6E7D3;color:#9A5B13}
+:root[data-theme="dark"] .wx-hot .wx-ic,:root[data-theme="dark"] .wx-ic.wx-hot{background:#3A2E20;color:#E2B47A}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .wx-hot .wx-ic,:root:not([data-theme="light"]) .wx-ic.wx-hot{background:#3A2E20;color:#E2B47A}}
+.wx-head{display:flex;gap:12px;align-items:center}
+.wx-b{min-width:0;flex:1}
+.wx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-2);border:1px solid var(--line-2);border-radius:10px;overflow:hidden;margin-top:12px}
+.wx-grid>div{background:var(--surface);padding:8px 10px;min-width:0}
+.wx-grid .k{display:block;font-size:11px;color:var(--muted)}
+.wx-grid b{font-size:16px}
+.wx-grid small{display:block;font-size:11px;color:var(--ink-2);line-height:1.3}
+@media (max-width:420px){.wx-grid{grid-template-columns:1fr 1fr}}
+.wx-hours{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.wx-hours>div{display:flex;flex-direction:column;align-items:center;gap:1px;border:1px solid var(--line-2);border-radius:10px;padding:6px 4px;background:var(--surface);font-size:12px;color:var(--ink-2)}
+.wx-hours b{font-size:15px;color:var(--ink)}
+.wx-hours small{font-size:11px;color:var(--muted)}
+.wx-adv{list-style:none;margin:10px 0 0;padding:0;font-size:12.5px;font-weight:500}
+.wx-adv li::before{content:"→ ";color:var(--muted)}
+.wx-t{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.wx-t b{font-size:20px;letter-spacing:-.01em}
+.wx-badge{font-size:12px;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:1px 8px;background:var(--surface)}
+.wx-d{font-size:12.5px;color:var(--ink-2);margin-top:2px}
+.wx-a{font-size:12.5px;color:var(--ink);font-weight:500;margin-top:2px}
+.wx-src{font-size:11px;color:var(--muted);padding:6px 16px 10px}
+.wx-mini{display:flex;gap:8px;align-items:center;margin:0 16px 10px;font-size:12.5px;color:var(--ink-2)}
+.reasons{list-style:none;margin:10px 0 0;padding:10px 0 0;border-top:1px dashed var(--line);text-align:left;font-size:12.5px;color:var(--ink-2)}
+.reasons li{padding-left:14px;position:relative;margin:2px 0}
+.reasons li::before{content:"";position:absolute;left:3px;top:.6em;width:5px;height:5px;border-radius:50%;background:var(--muted)}
+.chip.far{opacity:.55}
+.toggle input{width:18px;height:18px;accent-color:var(--accent)}
+
+/* Table */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-top:1px solid var(--line-2)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:13.5px}
+th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line-2);white-space:nowrap}
+th{font-size:11.5px;font-weight:600;color:var(--muted);background:var(--surface-2);line-height:1.3;vertical-align:bottom}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--surface);z-index:1;border-right:1px solid var(--line-2)}
+th:first-child{background:var(--surface-2)}
+tbody tr:last-child td{border-bottom:0}
+tfoot td{font-weight:600;background:var(--surface-2);border-top:1px solid var(--line);border-bottom:0}
+tfoot td:first-child{background:var(--surface-2)}
+td .name{border:0;background:none;padding:0;font-weight:500;color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+td .name:hover{text-decoration-color:var(--accent);color:var(--accent)}
+td.dim{color:var(--muted)}
+.tag{display:inline-block;font-size:10.5px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-left:6px;vertical-align:1px}
+.formula{font-size:12px;color:var(--muted);padding:10px 16px 14px;border-top:1px solid var(--line-2)}
+.formula code{font-family:inherit;color:var(--ink-2);background:var(--chip);padding:1px 6px;border-radius:4px}
+
+/* Tabs (segmented) */
+.seg{display:flex;gap:4px;background:var(--chip);border-radius:10px;padding:3px;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:1 0 auto;border:0;background:none;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:500;color:var(--ink-2);white-space:nowrap}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+/* Chart */
+.chart{margin-top:12px;touch-action:pan-y}
+.chart svg{width:100%;height:auto;display:block}
+.chart .cap{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px;gap:8px}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--ink-2)}
+.hbar{display:grid;grid-template-columns:minmax(90px,140px) 1fr auto;gap:6px 10px;align-items:center;font-size:13px;margin-top:12px}
+.hbar .bar{height:10px;border-radius:3px;background:var(--accent-soft);position:relative}
+.hbar .bar span{position:absolute;inset:0 auto 0 0;border-radius:3px;background:var(--accent)}
+.hbar .val{text-align:right;color:var(--ink-2)}
+
+/* Meal list */
+.list{list-style:none;margin:0;padding:0}
+.meal{border-top:1px solid var(--line-2)}
+.meal>button{display:grid;grid-template-columns:52px 1fr auto;gap:2px 12px;width:100%;text-align:left;background:none;border:0;padding:12px 16px}
+.meal>button:hover{background:var(--surface-2)}
+.d{grid-row:span 3;text-align:center;border:1px solid var(--line);border-radius:8px;padding:4px 0;align-self:start;line-height:1.15}
+.d b{display:block;font-size:17px}
+.d small{font-size:10.5px;color:var(--muted)}
+.meal .r{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meal .t{text-align:right;font-weight:600}
+.meal .m2{grid-column:2/4;font-size:12.5px;color:var(--ink-2)}
+.meal .m3{grid-column:2/4;font-size:12.5px;color:var(--muted);line-height:1.45}
+.meal .m3 .g{color:var(--ink-2)}
+.group-h{padding:10px 16px 6px;font-size:12px;font-weight:600;color:var(--muted);background:var(--surface-2);border-top:1px solid var(--line-2);display:flex;justify-content:space-between}
+.empty{padding:28px 16px;text-align:center;color:var(--muted);font-size:14px}
+.empty b{display:block;color:var(--ink);font-size:15px;margin-bottom:4px}
+
+/* Filters */
+.filters{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 16px 14px}
+.f{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.f select,.f input{height:40px;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:0 10px;font-size:14px;min-width:0;width:100%}
+.f.wide{grid-column:1/-1}
+.search{position:relative}
+.search input{padding-left:34px}
+.search svg{position:absolute;left:10px;bottom:11px;color:var(--muted)}
+@media (max-width:640px){.filters{grid-template-columns:1fr 1fr}}
+.fbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 16px 12px}
+.result{font-size:13px;color:var(--ink-2)}
+.result b{color:var(--ink)}
+.clear{margin-left:auto;border:0;background:none;color:var(--accent);font-weight:600;font-size:13px;padding:0}
+
+/* Member */
+.picker{padding:16px}
+.picker select{height:48px;font-size:16px;font-weight:500}
+.ledger{margin:0;padding:0 16px 6px;list-style:none}
+.ledger li{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.ledger li:last-child{border-bottom:0;border-top:1px solid var(--ink-2);font-weight:600;margin-top:2px}
+.ledger .op{display:inline-block;width:16px;color:var(--muted);font-weight:600}
+.ledger span:first-child{color:var(--ink-2)}
+.ledger li:last-child span:first-child{color:var(--ink)}
+.mrow{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:10px 16px;border-top:1px solid var(--line-2);font-size:13.5px}
+.mrow .sm{font-size:12px;color:var(--muted)}
+.mrow button.lk{border:0;background:none;padding:0;text-align:left;font-weight:500;color:var(--ink)}
+.mrow button.lk:hover{color:var(--accent)}
+
+/* Payments */
+.badge{display:inline-block;font-size:11px;font-weight:600;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:1px}
+.badge.dep{background:var(--chip);color:var(--ink-2)}
+.badge.adv{border:1px solid var(--accent);color:var(--accent)}
+.explain{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px;font-size:12.5px;color:var(--ink-2)}
+.explain>div{background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px;padding:10px}
+.explain b{display:block;color:var(--ink);margin-bottom:2px}
+@media (max-width:520px){.explain{grid-template-columns:1fr}}
+.tx-link{border:0;background:none;padding:0;color:var(--accent);font-size:12px;font-weight:500;text-align:left}
+
+/* Bottom nav */
+nav.bn{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav.bn .wrap{display:grid;grid-template-columns:repeat(4,1fr);height:var(--nav-h);padding:0}
+nav.bn button{border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11.5px;font-weight:500;color:var(--muted)}
+nav.bn button[aria-current="page"]{color:var(--ink);font-weight:600}
+nav.bn button[aria-current="page"] svg{color:var(--accent)}
+
+/* Sheet */
+.ov{position:fixed;inset:0;z-index:50;background:rgba(15,17,20,.42);display:none;align-items:flex-end;justify-content:center}
+.ov.open{display:flex}
+.sheet{background:var(--surface);width:100%;max-width:640px;max-height:88vh;overflow:auto;border-radius:16px 16px 0 0;padding:6px 0 calc(16px + env(safe-area-inset-bottom));animation:up .18s ease-out}
+@media (min-width:700px){.ov{align-items:center}.sheet{border-radius:16px;max-height:84vh}}
+@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+.grab{width:36px;height:4px;border-radius:2px;background:var(--line);margin:4px auto 6px}
+.sh-h{display:flex;align-items:flex-start;gap:12px;padding:8px 16px 12px}
+.sh-h h3{margin:0;font-size:18px;letter-spacing:-.01em}
+.sh-h .sub{font-size:13px;color:var(--muted)}
+.x{margin-left:auto;border:0;background:var(--chip);width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none}
+.kv{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+.kv>div{padding:10px 16px;border-right:1px solid var(--line-2)}
+.kv>div:nth-child(2n){border-right:0}
+.kv>div:nth-child(-n+2){border-bottom:1px solid var(--line-2)}
+.kv .k{font-size:12px;color:var(--muted)}
+.kv .v{font-weight:600}
+.payers{padding:12px 16px;font-size:13.5px;border-bottom:1px solid var(--line-2)}
+.payers .k{font-size:12px;color:var(--muted);margin-bottom:4px}
+.payers>div:not(.k){display:flex;justify-content:space-between;gap:8px;padding:2px 0}
+.note{margin:12px 16px 0;font-size:12.5px;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px;padding:10px}
+.issues{list-style:none;margin:0;padding:0 16px}
+.issues li{padding:10px 0;border-top:1px solid var(--line-2);font-size:13.5px;color:var(--ink-2)}
+.issues li small{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:2px}
+.foot{font-size:12px;color:var(--muted);text-align:center;margin:24px 0 8px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+
+
+/* ================= v5 — Sổ quỹ: restrained, ledger-like ================= */
+:root{
+  --bg:#F4F5F6; --surface:#FFFFFF; --surface-2:#F9FAFA; --ink:#1C2024; --ink-2:#4B5259; --muted:#7E848B;
+  --line:#E2E4E7; --line-2:#ECEEF0; --accent:#0E6B6B; --accent-soft:#BFD8D7; --accent-bg:#EEF5F4; --chip:#F0F1F2;
+  --radius:12px; --shadow:none;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111315; --surface:#181B1E; --surface-2:#1D2024; --ink:#E9EBED; --ink-2:#B4BAC0; --muted:#868D94;
+    --line:#2A2E33; --line-2:#23272B; --accent:#5FB3AE; --accent-soft:#24413F; --accent-bg:#1A2B2A; --chip:#202428;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111315; --surface:#181B1E; --surface-2:#1D2024; --ink:#E9EBED; --ink-2:#B4BAC0; --muted:#868D94;
+  --line:#2A2E33; --line-2:#23272B; --accent:#5FB3AE; --accent-soft:#24413F; --accent-bg:#1A2B2A; --chip:#202428;
+}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.5;background:var(--bg);
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 20px)}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.wrap{max-width:1080px}
+
+/* Header */
+.top{background:var(--surface);border-bottom:1px solid var(--line);backdrop-filter:none}
+.top .wrap{min-height:56px;gap:10px}
+.brand{font-size:16px;font-weight:600;letter-spacing:-.005em;display:flex;align-items:center;gap:8px}
+.brand-mark{display:none}
+.brand-txt small{display:none}
+.brand::before{content:"";width:10px;height:10px;border-radius:2px;background:var(--accent);flex:none}
+.period{height:36px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.period button{width:32px;height:34px;border-radius:6px}
+.period select{font-size:14px;font-weight:600;min-width:72px}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--line)}
+.notice{background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;margin:0;padding:10px 0;font-size:12.5px;color:var(--muted)}
+.notice b{color:var(--ink-2);font-weight:600}
+.notice button{color:var(--accent);font-size:12.5px}
+
+/* Type */
+h1{font-size:22px;font-weight:600;letter-spacing:-.015em;margin:22px 0 14px;line-height:1.25}
+h1 .h1-sub{display:block;font-size:13px;font-weight:400;color:var(--muted);letter-spacing:0;margin-top:2px}
+h2{font-size:14.5px;font-weight:600;letter-spacing:0}
+
+/* Panels: flat, hairline */
+.sec{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:none;margin:0 0 14px;overflow:hidden}
+.sec-h{padding:14px 16px 10px;background:none;border:0;align-items:baseline}
+.sec-h .sub{font-size:12.5px;color:var(--muted);margin-left:auto}
+.sec-h .link{margin-left:12px}
+.sec-h .link,.clear,.rlabel button,.tx-link{color:var(--accent);font-weight:500}
+.sec-b{padding:0 16px 16px}
+
+/* Overview grid */
+.ov-grid{display:flex;flex-direction:column}
+.col-side,.col-main{display:contents}
+.ov-grid #fundSec{order:0}.ov-grid #eatCard{order:1}.ov-grid .col-main>*:not(#fundSec){order:2}.ov-grid .recent-sec{order:3}
+@media (min-width:1024px){
+  .ov-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+  .col-side,.col-main{display:block;min-width:0}
+  .col-side{grid-column:2;grid-row:1;position:sticky;top:76px}
+  .col-main{grid-column:1;grid-row:1}
+}
+
+/* Fund: balance header, no box */
+#fundSec{background:none;border:0;border-radius:0;overflow:visible;margin-bottom:16px}
+.fund-sum{display:grid;grid-template-columns:1fr auto;grid-template-areas:"k chev" "v chev";align-items:end;padding:0;border-radius:0;background:none;text-align:left;width:100%;border:0}
+.fund-sum:hover{background:none}
+.fs-k{grid-area:k;font-size:13px;font-weight:500;color:var(--muted)}
+.fs-k small{display:inline;font-size:13px;color:var(--muted)}
+.fs-k small::before{content:" — "}
+.fs-v{grid-area:v;font-size:34px;font-weight:600;letter-spacing:-.02em;line-height:1.15;color:var(--ink)}
+.chev{grid-area:chev;align-self:center;width:32px;height:32px;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--surface);box-sizing:border-box}
+#fundDetail{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+#fundDetail .qs{border:0;padding:4px 16px 8px}
+.qs li{min-height:38px;border-bottom:1px solid var(--line-2)}
+.qs li:last-child{border-top:1px solid var(--ink);border-bottom:0}
+@media (min-width:760px){
+  #fundDetail .qs{display:flex;padding:0}
+  .qs li{border:0;border-right:1px solid var(--line-2)}
+  .qs li:last-child{border-top:0;background:var(--surface-2)}
+  .qs .op{background:var(--surface)}
+}
+
+/* Suggestion: quiet row */
+#eatCard{background:var(--surface);border:1px solid var(--line);color:var(--ink);box-shadow:none}
+#eatCard::after{display:none}
+#eatCard .eat{padding:14px 16px;gap:12px;align-items:center;flex-wrap:wrap}
+#eatCard .wx-ic{width:40px;height:40px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-2);align-self:center}
+#eatCard .t span{font-size:12.5px;color:var(--muted)}
+#eatCard .t span:first-child{font-size:12.5px;color:var(--accent);font-weight:500}
+#eatCard .t b{font-size:18px;font-weight:600;letter-spacing:-.01em;margin:1px 0 2px;color:var(--ink)}
+#eatCard .eat-b{gap:8px}
+#eatCard .btn{height:34px;font-size:13px;font-weight:500;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+#eatCard .btn.pri{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+@media (max-width:480px){#eatCard .eat-b{width:100%}#eatCard .eat-b .btn{flex:1}}
+
+/* Table */
+.tbl-wrap{border-top:1px solid var(--line-2)}
+th{background:var(--surface);color:var(--muted);font-weight:500;font-size:12px;padding:10px 14px;border-bottom:1px solid var(--line)}
+th:first-child{background:var(--surface)}
+td{padding:10px 14px;font-size:14px}
+th:first-child,td:first-child{border-right:0;box-shadow:inset -1px 0 0 var(--line-2)}
+tbody tr:hover td{background:var(--surface-2)}
+td .name{text-decoration:none;font-weight:500;color:var(--ink)}
+td .name:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+tfoot td,tfoot td:first-child{background:var(--surface);font-weight:600;border-top:1px solid var(--ink)}
+.tag{border-color:var(--line);color:var(--muted);font-weight:500;border-radius:4px}
+.formula{background:none;border-top:1px solid var(--line-2);padding:10px 16px 12px}
+.formula code{background:var(--chip);border:0}
+
+/* Segmented control: underline tabs */
+.seg{background:none;border-radius:0;padding:0;gap:18px;border-bottom:1px solid var(--line)}
+.seg button{flex:0 0 auto;border-radius:0;padding:8px 0;font-size:13.5px;font-weight:500;color:var(--muted);box-shadow:none;margin-bottom:-1px;border-bottom:2px solid transparent}
+.seg button[aria-selected="true"]{background:none;color:var(--ink);box-shadow:none;border-bottom-color:var(--ink)}
+.seg.sm{gap:4px;border:1px solid var(--line);border-radius:8px;padding:2px}
+.seg.sm button{border:0;margin:0;padding:4px 10px;border-radius:6px;font-size:12px}
+.seg.sm button[aria-selected="true"]{background:var(--chip)}
+.sec-h:has(.seg){padding-bottom:0}
+.dots{display:none}
+
+/* Charts: graphite, active month in accent */
+.chart svg rect[fill="var(--accent-soft)"]{fill:#D5D9DD}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chart svg rect[fill="var(--accent-soft)"]{fill:#33383D}}
+.hbar .bar{background:var(--chip);height:8px}
+.hbar .bar span{background:var(--accent)}
+
+/* Lists */
+.meal>button{padding:12px 16px;grid-template-columns:44px 1fr auto}
+.d{border:1px solid var(--line);background:none;color:var(--ink);border-radius:8px;padding:4px 0}
+.d b{font-size:17px;font-weight:600}
+.d small{color:var(--muted);opacity:1}
+.meal .r{font-weight:600}
+.meal .t{font-weight:600}
+.group-h{background:var(--surface-2);color:var(--muted);font-weight:500;padding:8px 16px;border-top:1px solid var(--line-2)}
+.mrow{padding:11px 16px}
+.badge{border-radius:4px;font-weight:500}
+.badge.dep{background:var(--chip);color:var(--ink-2)}
+.badge.adv{background:none;border:1px solid var(--accent-soft);color:var(--accent)}
+.explain>div{background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px}
+.f select,.f input{height:40px;border-radius:8px;background:var(--surface);border-color:var(--line)}
+.btn{height:36px;border-radius:8px;font-weight:500}
+.btn.pri{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.chip{border-radius:6px;padding:5px 10px}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface);font-weight:500}
+.chip[aria-pressed="true"] small{color:color-mix(in srgb,var(--surface) 70%,transparent)}
+.picker select{height:44px;border-radius:8px;font-size:15px}
+.mstats{background:var(--line-2)}
+.mstats>div{background:var(--surface)}
+.mstats b{font-size:18px;font-weight:600;color:var(--ink)}
+.ledger li:last-child{border-top:1px solid var(--ink)}
+
+/* Sheet */
+.ov{background:rgba(17,19,21,.4)}
+.sheet{border-radius:14px 14px 0 0}
+@media (min-width:700px){.sheet{border-radius:14px}}
+.sh-h h3{font-size:18px;font-weight:600;letter-spacing:-.01em}
+.x{background:none;border:1px solid var(--line);border-radius:8px}
+.pick{background:var(--surface-2);border:1px solid var(--line);border-radius:10px}
+.pick .nm{font-size:26px;font-weight:600;letter-spacing:-.015em}
+.pick .lbl{color:var(--accent);font-weight:500}
+.wx{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.wx-ic{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;color:var(--ink-2)}
+.wx-hot .wx-ic,.wx-ic.wx-hot,.wx-rain .wx-ic,.wx-ic.wx-rain,.wx-storm .wx-ic,.wx-ic.wx-storm{background:var(--surface-2);color:var(--ink-2)}
+.wx-t b{font-size:22px;font-weight:600}
+.wx-badge{border-radius:4px;font-weight:500}
+.wx-grid{border-radius:8px}
+.wx-grid b{font-weight:600}
+.wx-hours>div{border-radius:8px}
+
+/* Bottom nav: flat bar */
+nav.bn{left:0;right:0;bottom:0;border:0;border-top:1px solid var(--line);border-radius:0;background:var(--surface);box-shadow:none}
+nav.bn .wrap{height:var(--nav-h);padding:0}
+nav.bn button{font-size:11.5px;font-weight:500;color:var(--muted);border-radius:0;margin:0;position:relative}
+nav.bn button[aria-current="page"]{color:var(--ink);background:none}
+nav.bn button[aria-current="page"] svg{color:var(--accent)}
+nav.bn button[aria-current="page"]::before{content:"";position:absolute;top:-1px;left:30%;right:30%;height:2px;background:var(--ink)}
+
+/* Desktop: tabs move into the header row */
+@media (min-width:1024px){
+  body{padding-bottom:24px}
+  nav.bn{top:0;bottom:auto;left:50%;right:auto;transform:translateX(-50%);border:0;background:none;z-index:25;width:auto}
+  nav.bn .wrap{display:flex;height:56px;gap:4px}
+  nav.bn button{flex-direction:row;gap:8px;font-size:14px;padding:0 14px}
+  nav.bn button svg{width:18px;height:18px}
+  nav.bn button[aria-current="page"]::before{top:auto;bottom:0;left:14px;right:14px}
+  h1{font-size:24px;margin-top:26px}
+}
+@media (max-width:440px){.fs-v{font-size:30px}}
+#eatCard .eat-b{width:100%}#eatCard .eat-b .btn{flex:1}
+#eatCard .t{min-width:0;flex:1}
+.sec-h .link{margin-left:auto}
+.sec-h .sub + .link{margin-left:12px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+
+/* ================= v7 — Apple-style: SF type, iOS system colours ================= */
+:root{
+  --bg:#F2F2F7; --surface:#FFFFFF; --surface-2:#F7F7FA; --ink:#1C1C1E; --ink-2:#3A3A3C; --muted:#8E8E93;
+  --line:#E5E5EA; --line-2:#EFEFF4; --chip:#EFEFF4;
+  --blue:#007AFF; --blue-bg:#E8F1FF; --indigo:#5856D6; --orange:#FF9500; --orange-d:#C46A00; --orange-bg:#FFF3E3;
+  --purple:#AF52DE; --purple-bg:#F6ECFB; --accent:#007AFF; --accent-soft:#CFE3FF; --accent-bg:#E8F1FF; --radius:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#000000; --surface:#1C1C1E; --surface-2:#2C2C2E; --ink:#F2F2F7; --ink-2:#D1D1D6; --muted:#98989D;
+  --line:#38383A; --line-2:#2C2C2E; --chip:#2C2C2E; --blue:#0A84FF; --blue-bg:#0B2342; --indigo:#5E5CE6;
+  --orange:#FF9F0A; --orange-d:#FFB340; --orange-bg:#33240D; --purple:#BF5AF2; --purple-bg:#2E1A38;
+  --accent:#0A84FF; --accent-soft:#163A66; --accent-bg:#0B2342;}}
+:root[data-theme="dark"]{
+  --bg:#000000; --surface:#1C1C1E; --surface-2:#2C2C2E; --ink:#F2F2F7; --ink-2:#D1D1D6; --muted:#98989D;
+  --line:#38383A; --line-2:#2C2C2E; --chip:#2C2C2E; --blue:#0A84FF; --blue-bg:#0B2342; --indigo:#5E5CE6;
+  --orange:#FF9F0A; --orange-d:#FFB340; --orange-bg:#33240D; --purple:#BF5AF2; --purple-bg:#2E1A38;
+  --accent:#0A84FF; --accent-soft:#163A66; --accent-bg:#0B2342;}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;letter-spacing:-.01em;background:var(--bg)}
+h1{font-size:30px;font-weight:700;letter-spacing:-.025em;margin:18px 0 14px}
+h1 .h1-sub{font-size:14px;letter-spacing:-.005em}
+h2{font-size:17px;font-weight:600;letter-spacing:-.02em}
+
+/* Translucent nav bars */
+.top{background:color-mix(in srgb,var(--surface) 78%,transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--line)}
+.brand{font-weight:600;font-size:17px}
+.brand::before{background:linear-gradient(135deg,var(--orange),#FF2D55);width:22px;height:22px;border-radius:7px}
+.period{border:0;background:var(--chip);border-radius:10px}
+.period select{font-weight:600}
+.period button{color:var(--blue)}
+.icon-btn{border:0;background:var(--chip);border-radius:10px;color:var(--blue)}
+.notice{border-bottom:0;color:var(--muted)}
+.notice button,.sec-h .link,.clear,.rlabel button,.tx-link{color:var(--blue);font-weight:500}
+
+/* Grouped cards */
+.sec{border:0;border-radius:var(--radius);background:var(--surface)}
+.sec-h{padding:16px 16px 10px}
+.sec-h .sub{color:var(--muted)}
+
+/* Fund: wallet-style gradient card */
+#fundSec{background:linear-gradient(135deg,#5E5CE6 0%,#007AFF 100%);color:#fff;border-radius:20px;padding:20px 20px 18px;
+  box-shadow:0 12px 28px -14px rgba(0,122,255,.55)}
+.fs-k,.fs-k small{color:rgba(255,255,255,.78)}
+.fs-v{color:#fff;font-size:34px;font-weight:700;letter-spacing:-.03em}
+.chev{background:rgba(255,255,255,.18);border:0;color:#fff;border-radius:10px}
+#fundDetail{margin-top:14px;border:0;border-radius:14px;color:var(--ink);background:var(--surface)}
+#fundDetail .qs li:last-child{background:var(--blue-bg)}
+.qs li{border-bottom-color:var(--line-2)}
+.qs li:last-child{border-top-color:var(--ink)}
+
+/* ===== Lunch widget: sky changes with the weather ===== */
+#eatCard.eat-w{--g1:#FF9F0A;--g2:#FF5E3A;color:#fff;border-radius:22px;padding:18px 18px 16px;position:relative;overflow:hidden;
+  background:linear-gradient(150deg,var(--g1) 0%,var(--g2) 100%);box-shadow:0 14px 30px -16px color-mix(in srgb,var(--g2) 80%,transparent)}
+#eatCard.eat-w::before{content:"";position:absolute;width:220px;height:220px;right:-70px;top:-90px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.35),rgba(255,255,255,0) 65%);pointer-events:none}
+#eatCard.eat-hot{--g1:#FF8A00;--g2:#FF2D55}
+#eatCard.eat-rain,#eatCard.eat-storm{--g1:#5B7DB1;--g2:#2C3E66}
+#eatCard.eat-cold{--g1:#5AC8FA;--g2:#007AFF}
+#eatCard.eat-dust,#eatCard.eat-dust2{--g1:#9C97B8;--g2:#5E5A7A}
+#eatCard.eat-humid{--g1:#40C8E0;--g2:#0A84FF}
+.eat-w>*{position:relative}
+.ew-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ew-lbl{font-size:13px;font-weight:600;opacity:.9}
+.ew-wx{display:inline-flex;align-items:center;gap:6px;font-size:13px;background:rgba(255,255,255,.2);border-radius:999px;padding:4px 10px 4px 8px}
+.ew-wx b{font-size:15px;font-weight:700}
+.ew-dish{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin:12px 0 16px;text-wrap:balance}
+.ew-route{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px}
+.ew-end{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.22);display:grid;place-items:center}
+.ew-track{position:relative;height:6px;border-radius:3px;background:rgba(255,255,255,.28)}
+.ew-fill{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:#fff}
+.ew-dot{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 0 4px rgba(255,255,255,.3)}
+.ew-lim{position:absolute;top:-5px;bottom:-5px;width:0;border-left:2px dashed rgba(255,255,255,.85)}
+.ew-lim i{position:absolute;top:-17px;left:-14px;font-style:normal;font-size:10.5px;font-weight:600;white-space:nowrap;opacity:.95}
+.ew-dist{display:flex;flex-direction:column;align-items:flex-end;font-size:11.5px;opacity:.95;line-height:1.2}
+.ew-dist b{font-size:15px}
+.ew-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.ew-pills span{font-size:12px;font-weight:500;background:rgba(255,255,255,.18);border-radius:999px;padding:4px 10px}
+.ew-acts{display:flex;gap:8px;margin-top:16px}
+.ew-btn{flex:1;height:40px;border-radius:12px;border:0;background:rgba(255,255,255,.22);color:#fff;font-weight:600;font-size:14px}
+.ew-btn.pri{background:#fff;color:var(--g2)}
+.ew-btn:hover{filter:brightness(1.05)}
+@media (prefers-reduced-motion: no-preference){.ew-dot{animation:ewPulse 2.4s ease-in-out infinite}}
+@keyframes ewPulse{50%{box-shadow:0 0 0 8px rgba(255,255,255,.12)}}
+
+/* Section marks */
+.sec-h h2{display:flex;align-items:center;gap:8px}
+.sec-h h2::before{content:"";width:6px;height:18px;border-radius:3px;background:var(--blue);flex:none}
+.dom-food .sec-h h2::before,#s3::before{background:var(--orange)}
+
+/* Tables */
+th,th:first-child{background:var(--surface);color:var(--muted);font-weight:500;border-bottom:.5px solid var(--line)}
+td{border-bottom:.5px solid var(--line-2)}
+tfoot td,tfoot td:first-child{background:var(--surface-2);border-top:1px solid var(--line)}
+td .name{color:var(--blue);font-weight:500}
+th:first-child,td:first-child{box-shadow:inset -.5px 0 0 var(--line)}
+
+/* iOS segmented control */
+.seg{background:var(--chip);border:0;border-radius:10px;padding:2px;gap:2px}
+.seg button{border:0;margin:0;border-radius:8px;padding:6px 12px;color:var(--ink);font-weight:500;flex:1 0 auto}
+.seg button[aria-selected="true"]{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.12),0 0 0 .5px rgba(0,0,0,.04)}
+.seg.sm{border:0;background:var(--chip)}
+.seg.sm button[aria-selected="true"]{background:var(--surface)}
+.sec-h:has(.seg){padding-bottom:4px}
+
+/* Charts */
+.tone-food{--b-on:var(--orange);--b-off:color-mix(in srgb,var(--orange) 30%,var(--surface))}
+.tone-money{--b-on:var(--blue);--b-off:color-mix(in srgb,var(--blue) 25%,var(--surface))}
+.tone-adv{--b-on:var(--purple);--b-off:color-mix(in srgb,var(--purple) 25%,var(--surface))}
+.lg.bar{background:var(--orange)}
+.hbar .bar{background:var(--chip)}
+.hbar .bar span{background:var(--cc)}
+.cdot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cc);margin-right:6px;vertical-align:1px}
+
+/* Lists */
+.d{border:0;border-radius:12px;background:color-mix(in srgb,var(--cc) 14%,var(--surface));color:var(--cc)}
+.d b{color:color-mix(in srgb,var(--cc) 80%,var(--ink))}
+.d small{color:color-mix(in srgb,var(--cc) 75%,var(--ink))}
+.meal{border-top:.5px solid var(--line)}
+.group-h{background:var(--surface-2);color:var(--muted);font-weight:600;border-top:.5px solid var(--line)}
+.mrow{border-top:.5px solid var(--line)}
+.badge.dep{background:var(--blue-bg);color:var(--blue)}
+.badge.adv{background:var(--purple-bg);color:var(--purple);border:0}
+.explain>div:first-child{background:var(--blue-bg);border:0}
+.explain>div:last-child{background:var(--purple-bg);border:0}
+.f select,.f input,.picker select{background:var(--chip);border:0;border-radius:10px}
+.btn{border-radius:10px;border:0;background:var(--chip);color:var(--blue);font-weight:600}
+.btn.pri{background:var(--blue);color:#fff}
+.chip{border:0;background:var(--chip);border-radius:999px;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--blue);color:#fff}
+.mstats{background:var(--line-2)}
+.mstats b{color:var(--blue);font-weight:700}
+.ledger li{border-bottom-color:var(--line)}
+
+/* Sheet */
+.sheet{border-radius:20px 20px 0 0;background:var(--bg)}
+@media (min-width:700px){.sheet{border-radius:20px}}
+.sh-h h3{font-size:22px;font-weight:700;letter-spacing:-.025em}
+.x{border:0;background:var(--chip);border-radius:50%;color:var(--muted)}
+.pick{background:var(--surface);border:0;border-radius:16px}
+.pick .lbl{color:var(--orange-d)}
+.wx{background:var(--surface);border:0;border-radius:16px}
+.wx-grid{border:0;background:var(--line-2)}
+.wx-hours>div{border:0;background:var(--surface-2)}
+.wx-ic{border:0;background:var(--chip);color:var(--ink-2)}
+.wx-hot .wx-ic{background:#FFE8D6;color:#FF6B00}
+.wx-rain .wx-ic,.wx-storm .wx-ic{background:var(--blue-bg);color:var(--blue)}
+.wx-nice .wx-ic{background:var(--orange-bg);color:var(--orange)}
+.wx-dust .wx-ic,.wx-dust2 .wx-ic{background:var(--purple-bg);color:#7D6E9E}
+.wx-badge{border:0;background:var(--chip);border-radius:999px}
+
+/* Tab bar */
+nav.bn{background:color-mix(in srgb,var(--surface) 80%,transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:.5px solid var(--line)}
+nav.bn button{font-size:10.5px;font-weight:500;color:var(--muted)}
+nav.bn button[aria-current="page"]{color:var(--blue)}
+nav.bn button[aria-current="page"] svg{color:var(--blue)}
+nav.bn button[aria-current="page"]::before{display:none}
+@media (min-width:1024px){
+  nav.bn{background:none;backdrop-filter:none;-webkit-backdrop-filter:none;border:0}
+  nav.bn .wrap{height:56px;align-items:center}
+  nav.bn button{height:36px;border-radius:10px;font-size:14px;color:var(--ink-2);padding:0 14px}
+  nav.bn button[aria-current="page"]{background:var(--chip);color:var(--ink)}
+  nav.bn button[aria-current="page"] svg{color:var(--blue)}
+  h1{font-size:34px}
+}
+#eatCard.eat-w{border:0}
+.sec-h{flex-wrap:wrap}
+@media (max-width:520px){.sec-h .sub{width:100%;margin-left:14px}}
+
+/* ================= v8 — refined neutrals, iris accent, meal-ticket suggestion ================= */
+:root{
+  --bg:#F6F6F8; --surface:#FFFFFF; --surface-2:#F9F9FB; --ink:#18181B; --ink-2:#3F3F46; --muted:#8B8B94;
+  --line:#E7E7EC; --line-2:#F0F0F3; --chip:#F1F1F4;
+  --blue:#5B5BD6; --blue-bg:#EFEFFD; --orange:#F76B15; --orange-d:#C2470A; --orange-bg:#FFF1E7; --purple:#8E4EC6; --purple-bg:#F6EFFC;
+  --accent:#5B5BD6; --accent-soft:#D9D9F7; --accent-bg:#EFEFFD;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B0B0E; --surface:#16161A; --surface-2:#1C1C21; --ink:#EDEDF0; --ink-2:#C7C7CE; --muted:#8B8B94; --line:#2A2A31; --line-2:#212127; --chip:#222228;
+  --blue:#8D8DF2; --blue-bg:#1E1E3A; --orange:#FF8B3E; --orange-d:#FFA466; --orange-bg:#2E1C10; --purple:#B57FE6; --purple-bg:#26193A;
+  --accent:#8D8DF2; --accent-soft:#2E2E58; --accent-bg:#1E1E3A;}}
+:root[data-theme="dark"]{
+  --bg:#0B0B0E; --surface:#16161A; --surface-2:#1C1C21; --ink:#EDEDF0; --ink-2:#C7C7CE; --muted:#8B8B94; --line:#2A2A31; --line-2:#212127; --chip:#222228;
+  --blue:#8D8DF2; --blue-bg:#1E1E3A; --orange:#FF8B3E; --orange-d:#FFA466; --orange-bg:#2E1C10; --purple:#B57FE6; --purple-bg:#26193A;
+  --accent:#8D8DF2; --accent-soft:#2E2E58; --accent-bg:#1E1E3A;}
+.brand::before{background:conic-gradient(from 200deg,#5B5BD6,#8E4EC6,#F76B15,#5B5BD6);border-radius:50%;width:20px;height:20px}
+.sec{border:1px solid var(--line)}
+td .name{color:var(--ink)}
+td .name:hover{color:var(--blue)}
+
+/* Fund: quiet white card, number carries it */
+#fundSec{background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:none;border-radius:18px;padding:18px}
+#fundSec .fs-k,#fundSec .fs-k small{color:var(--muted)}
+#fundSec .fs-v{color:var(--ink);font-size:32px}
+#fundSec .chev{background:var(--chip);color:var(--ink-2)}
+#fundDetail{background:var(--surface-2);border:1px solid var(--line-2)}
+#fundDetail .qs li:last-child{background:var(--blue-bg)}
+
+/* ===== Meal ticket ===== */
+#eatCard.tk{--o1:#FFC53D;--o2:#F76B15;display:flex;align-items:stretch;padding:0;border:1px solid var(--line);border-radius:18px;
+  background:var(--surface);overflow:visible;position:relative;box-shadow:none;color:var(--ink)}
+.tk-rain,.tk-storm{--o1:#7FA8F5 !important;--o2:#3E63DD !important}
+.tk-hot{--o1:#FFB224 !important;--o2:#E5484D !important}
+.tk-cold{--o1:#7EE0EE !important;--o2:#0090FF !important}
+.tk-dust,.tk-dust2{--o1:#C4B8E0 !important;--o2:#7C66DC !important}
+.tk-humid{--o1:#7CE2D2 !important;--o2:#12A594 !important}
+.tk-unknown{--o1:#D4D4D8 !important;--o2:#A1A1AA !important}
+.tk-main{flex:1;min-width:0;display:flex;align-items:center;gap:14px;padding:14px 14px 14px 14px;border:0;background:none;text-align:left;color:inherit;border-radius:18px 0 0 18px}
+.tk-main:hover{background:var(--surface-2)}
+.tk-orb{position:relative;width:54px;height:54px;flex:none;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;color:#fff;
+  background:radial-gradient(circle at 32% 28%,var(--o1),var(--o2) 78%);box-shadow:0 6px 16px -6px var(--o2)}
+.tk-orb::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1.5px dashed color-mix(in srgb,var(--o2) 45%,transparent)}
+.tk-orb b{font-size:13px;font-weight:700;line-height:1.1;margin-top:1px}
+@media (prefers-reduced-motion: no-preference){.tk-orb::after{animation:tkSpin 24s linear infinite}}
+@keyframes tkSpin{to{transform:rotate(360deg)}}
+.tk-body{display:flex;flex-direction:column;min-width:0;gap:1px}
+.tk-lbl{font-size:12px;color:var(--muted);font-weight:500}
+.tk-dish{font-size:18px;font-weight:700;letter-spacing:-.02em;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk-meta{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;font-size:12px;color:var(--ink-2);margin-top:4px}
+.tk-walk{width:36px;height:4px;border-radius:2px;background:var(--chip);position:relative;overflow:hidden}
+.tk-walk i{position:absolute;inset:0 auto 0 0;border-radius:2px;background:linear-gradient(90deg,var(--o1),var(--o2))}
+.tk-wx{color:var(--muted)}
+.tk-wx{flex-basis:100%}
+/* perforated stub */
+.tk-stub{position:relative;flex:none;width:72px;border:0;border-left:1.5px dashed var(--line);background:none;color:var(--o2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:0 18px 18px 0}
+.tk-stub small{font-size:11.5px;font-weight:600;color:var(--ink-2)}
+.tk-stub:hover{background:color-mix(in srgb,var(--o2) 8%,transparent)}
+.tk-stub::before,.tk-stub::after{content:"";position:absolute;left:-9px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:1px solid var(--line)}
+.tk-stub::before{top:-9px;clip-path:inset(50% 0 0 0)}
+.tk-stub::after{bottom:-9px;clip-path:inset(0 0 50% 0)}
+@media (prefers-reduced-motion: no-preference){.tk-stub:hover svg{transform:rotate(-12deg)}.tk-stub svg{transition:transform .2s}}
+.ov-grid #eatCard{margin-bottom:14px}
+
+/* Section marks recoloured */
+.sec-h h2::before{width:4px;height:16px;border-radius:2px}
+/* Chips and buttons use iris */
+.chip[aria-pressed="true"],.btn.pri{background:var(--ink);color:var(--surface)}
+.seg button[aria-selected="true"]{color:var(--ink)}
+/* Sheet */
+.pick{border:1px solid var(--line)}
+
+/* ================= v9 — Viettel red brand accent ================= */
+:root{
+  --vt:#EE0033; --vt-d:#C2002A; --vt-bg:#FFF0F3; --vt-soft:#FFD3DC;
+  --blue:#EE0033; --blue-bg:#FFF0F3; --accent:#EE0033; --accent-soft:#FFD3DC; --accent-bg:#FFF0F3;
+  --money:#3D4A5C; --money-bg:#EEF1F5;
+  --orange:#F59E0B; --orange-d:#B45309; --orange-bg:#FFF6E5;
+  --bg:#F7F7F8;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --vt:#FF3358; --vt-d:#FF6680; --vt-bg:#2D1016; --vt-soft:#4A1A24;
+  --blue:#FF3358; --blue-bg:#2D1016; --accent:#FF3358; --accent-soft:#4A1A24; --accent-bg:#2D1016;
+  --money:#A9B6C8; --money-bg:#1B2129; --orange:#FBBF24; --orange-d:#FCD34D; --orange-bg:#2B210E;}}
+:root[data-theme="dark"]{
+  --vt:#FF3358; --vt-d:#FF6680; --vt-bg:#2D1016; --vt-soft:#4A1A24;
+  --blue:#FF3358; --blue-bg:#2D1016; --accent:#FF3358; --accent-soft:#4A1A24; --accent-bg:#2D1016;
+  --money:#A9B6C8; --money-bg:#1B2129; --orange:#FBBF24; --orange-d:#FCD34D; --orange-bg:#2B210E;}
+/* brand chrome */
+.top{box-shadow:inset 0 3px 0 var(--vt)}
+.top .wrap{padding-top:3px}
+.brand::before{background:var(--vt);border-radius:6px;width:20px;height:20px;
+  -webkit-mask:none;box-shadow:inset 0 0 0 5px var(--vt),inset 0 0 0 8px #fff}
+.period button,.icon-btn{color:var(--vt)}
+nav.bn button[aria-current="page"],nav.bn button[aria-current="page"] svg{color:var(--vt)}
+@media (min-width:1024px){
+  nav.bn button[aria-current="page"]{background:var(--vt-bg);color:var(--vt)}
+}
+.sec-h h2::before{background:var(--vt)}
+.dom-food .sec-h h2::before,#s3::before{background:var(--orange)}
+.chip[aria-pressed="true"],.btn.pri{background:var(--vt);border-color:var(--vt);color:#fff}
+.seg button[aria-selected="true"]{color:var(--ink)}
+.seg.sm button[aria-selected="true"]{color:var(--vt)}
+td .name:hover{color:var(--vt)}
+/* numbers stay neutral: never red */
+.fs-v,.num,td.num,tfoot td{color:inherit}
+#fundSec{border-top:3px solid var(--vt)}
+#fundDetail .qs li:last-child{background:var(--surface-2)}
+/* money-related tints use slate, not red */
+.tone-money{--b-on:var(--money);--b-off:color-mix(in srgb,var(--money) 22%,var(--surface))}
+.badge.dep{background:var(--money-bg);color:var(--money)}
+.explain>div:first-child{background:var(--money-bg)}
+.mstats b{color:var(--ink)}
+.tone-food{--b-on:var(--orange);--b-off:color-mix(in srgb,var(--orange) 28%,var(--surface))}
+.lg.bar{background:var(--orange)}
+/* ticket: stub uses brand red */
+.tk-stub{color:var(--vt)}
+.tk-stub:hover{background:var(--vt-bg)}
+.dir{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+a.btn.dir{color:var(--ink);background:var(--surface);border:1px solid var(--line)}
+.lnkdir{display:inline-flex;align-items:center;gap:5px;color:var(--blue);font-weight:600;font-size:13px;text-decoration:none}
+.mdir{display:flex;align-items:center;gap:10px;margin-top:6px;font-size:12.5px;color:var(--muted)}
+.pick .sampleloc{font-size:11.5px;color:var(--muted);margin-top:4px}
+.ctl-seg{margin-top:4px}
+.tseg button b{font-size:12px;margin-left:4px;color:var(--muted)}
+.tseg button[aria-selected="true"] b{color:var(--vt)}
+.sbar{display:flex;gap:8px;margin-top:10px}
+.sfield{flex:1;position:relative;display:flex;align-items:center}
+.sfield svg{position:absolute;left:12px;color:var(--muted)}
+.sfield input{width:100%;height:42px;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 12px 0 36px;font-size:15px}
+.sfield input:focus{outline:none;border-color:var(--vt)}
+.fbtn{height:42px;border:1px solid var(--line);border-radius:12px;background:var(--surface);display:flex;align-items:center;gap:6px;padding:0 12px;font-weight:600;font-size:14px}
+.fbtn.on{border-color:var(--vt);color:var(--vt)}
+.fbtn i{font-style:normal;background:var(--vt);color:#fff;border-radius:999px;font-size:11px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 5px}
+.achips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.achip{border:0;background:var(--vt-bg);color:var(--vt-d);border-radius:999px;padding:4px 6px 4px 11px;font-size:12.5px;font-weight:500;display:inline-flex;align-items:center;gap:4px}
+.achip span{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:14px}
+.mfilter{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:10px;align-items:center;padding-bottom:2px}
+.mfilter::-webkit-scrollbar{display:none}
+.mfilter>span{white-space:nowrap;font-size:12.5px;color:var(--muted);margin-right:2px}
+.fchip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 11px;font-size:13px;white-space:nowrap;color:var(--ink)}
+.fchip b{font-weight:700;margin-left:2px}
+.fchip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.rsum{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-top:10px;padding:0 2px}
+.rsum b{color:var(--ink)}
+.fsec{padding:10px 16px 0}
+.fsec .chips{padding:0}
+.fsec.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.flbl{font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:8px}
+.fsel{width:100%;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:0 10px;font-size:15px;margin-top:8px}
+.fsec.two .fsel{margin-top:0}
+.ffoot{display:flex;gap:10px;padding:16px;margin-top:6px;border-top:1px solid var(--line-2)}
+.ffoot .btn{flex:1;height:46px}
+.ffoot .btn.pri{flex:2}
+.pbar{display:grid;grid-template-columns:repeat(3,1fr) 1.25fr;gap:2px;background:var(--chip);border-radius:12px;padding:3px;margin-top:12px}
+.pbar button,.pmore{border:0;background:none;border-radius:9px;height:36px;font-size:14px;font-weight:500;color:var(--ink-2);display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pbar button[aria-pressed="true"],.pmore.on{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.pmore{position:relative;cursor:pointer;padding:0 6px}
+.pmore select{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;font-size:16px}
+.pmore svg{color:var(--muted);flex:none}
+.pmore:focus-within{outline:2px solid var(--vt);outline-offset:1px}
+.pchip{height:36px;border:0;border-radius:10px;background:var(--chip);display:inline-flex;align-items:center;gap:6px;padding:0 10px 0 12px;font-weight:600;font-size:14.5px;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;flex:none}
+.pchip svg{color:var(--muted)}
+.pchip.all{background:var(--vt-bg);color:var(--vt-d)}
+.pgrid-wrap{padding:4px 16px 20px}
+.pyear{font-size:12.5px;font-weight:600;color:var(--muted);margin:12px 2px 8px}
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pcell{height:58px;border:0;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:14px;color:var(--ink)}
+.pcell b{font-weight:600}
+.pcell small{font-size:10.5px;color:var(--vt);font-weight:600}
+.pcell[aria-pressed="true"]{background:var(--ink);color:var(--surface);box-shadow:none}
+.pcell[aria-pressed="true"] small{color:var(--vt-soft)}
+.scopelnk{border:0;background:none;padding:0;color:var(--vt);font-weight:600;font-size:12.5px}
+.rsum .sc{display:flex;gap:8px;align-items:center}
+
+.boot{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:24px;color:var(--muted)}
+.boot b{color:var(--ink);font-size:17px}.boot span{max-width:340px;font-size:14px;line-height:1.5}
+.boot code{background:var(--line-2,#eee);padding:1px 5px;border-radius:5px;font-size:12.5px}
+.boot button{margin-top:8px;height:44px;padding:0 20px;border-radius:12px;border:0;background:#EE0033;color:#fff;font:inherit;font-weight:600}
+.boot-spin{width:28px;height:28px;border-radius:50%;border:3px solid #EE003322;border-top-color:#EE0033;animation:bspin .8s linear infinite;margin-bottom:6px}
+@keyframes bspin{to{transform:rotate(360deg)}}
+.pin-f{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;margin-top:10px}
+.pin-f input{height:50px;border-radius:12px;border:1px solid #d4d4d8;padding:0 14px;font:inherit;font-size:20px;text-align:center;letter-spacing:4px}
+.pin-f button{margin:0;width:100%;height:50px}.pin-err{min-height:20px;color:#B4002A !important;font-weight:500}
+#syncRole{cursor:default}#syncRole[data-state=error]{background:#FFF1E6;color:#B45309;cursor:pointer}#syncRole[data-state=saving],#syncRole[data-state=pending]{background:#F4F4F5;color:#52525B}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3.5 11h17a8.5 8.5 0 0 1-17 0z"/><path d="M9 4.5c0 1.5 1 1.5 1 3M13 4.5c0 1.5 1 1.5 1 3"/></svg></span><span class="brand-txt">Quỹ ăn trưa<small>Nhóm đồng nghiệp, chỉ xem</small></span></div>
+    <button class="pchip" id="pChip" aria-label="Chọn kỳ" hidden></button>
+    <button class="icon-btn" id="openEat" aria-label="Hôm nay ăn gì?" title="Hôm nay ăn gì?"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.2" fill="currentColor" stroke="none"/></svg></button>
+    
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="notice" role="note">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+    <span id="connNote">Đang tải dữ liệu…</span>
+    <button id="openIssues">Ghi chú dữ liệu</button>
+  </div>
+  <div id="view"></div>
+  <p class="foot">Khu vực quản trị (nhập/sửa, chốt kỳ) tách riêng, không nằm trong trang xem này.</p>
+</main>
+
+<nav class="bn" aria-label="Điều hướng chính">
+  <div class="wrap">
+    <button data-tab="overview"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="8" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="15" width="7" height="6" rx="1.5"/></svg>Tổng quan</button>
+    <button data-tab="meals"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v8a2 2 0 0 0 2 2v8M5 3v5M9 3v5"/><path d="M17 21V3c-2 1.5-3 4-3 7v3h3"/></svg>Bữa ăn</button>
+    <button data-tab="members"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.8.7 3 2.4 3.5 5.2"/></svg>Thành viên</button>
+    <button data-tab="payments"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="2"/><path d="M2.5 10h19M6.5 14.5h4"/></svg>Đóng tiền</button>
+  </div>
+</nav>
+
+<div class="ov" id="ov" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" id="sheet"></div></div>
+
+<script src="config.js"></script>
+<script>
+/* ================== KẾT NỐI GOOGLE SHEETS ================== */
+/* Đường link máy chủ lấy từ file config.js (cùng thư mục). Không cần sửa ở đây. */
+const CFG = window.QUY_CONFIG || {};
+const API_URL = String(CFG.API_URL || "").trim();
+/* ============================================================ */
+
+const CONN = {from: null, time: null, raw: null};
+const CACHE_KEY = "quy-an-trua:cache:v1";
+const apiReady = () => /^https?:\/\//.test(API_URL);
+const tzMonth = () => new Intl.DateTimeFormat("en-CA", {timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit"}).format(new Date()).slice(0, 7);
+const lsGet = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const lsSet = (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} };
+
+async function apiGet() {
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 20000);
+  try {
+    const r = await fetch(API_URL + (API_URL.includes("?") ? "&" : "?") + "action=data&t=" + Date.now(), {signal: ctl.signal, redirect: "follow"});
+    const j = await r.json();
+    if (!j.ok) throw new Error(j.error || "Lỗi máy chủ");
+    return j;
+  } finally { clearTimeout(t); }
+}
+async function apiPost(body) {
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 30000);
+  try {
+    const r = await fetch(API_URL, {method: "POST", body: JSON.stringify(body), signal: ctl.signal, redirect: "follow"});
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+
+const normP = v => { const s = String(v || ""); if (/^\d{4}-\d{2}/.test(s)) return s.slice(0, 7); const d = new Date(s); return isNaN(d) ? "" : new Intl.DateTimeFormat("en-CA", {timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit"}).format(d).slice(0, 7); };
+const normD = v => { const s = String(v || ""); if (!s) return null; if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10); const d = new Date(s); return isNaN(d) ? null : new Intl.DateTimeFormat("en-CA", {timeZone: "Asia/Ho_Chi_Minh"}).format(d); };
+
+/* Dựng dữ liệu cho giao diện từ các bảng trong Google Sheets.
+   Số dư đầu kỳ được tính lại: đầu kỳ tháng sau = cuối kỳ tháng trước (làm tròn đồng); quản lý luôn về 0. */
+function buildData(raw) {
+  const members = (raw.members || []).slice().sort((a, b) => (a.sort ?? 999) - (b.sort ?? 999))
+    .map(m => ({id: m.id, name: m.name, manager: !!m.manager, active: !!m.active}));
+  const parts = {};
+  (raw.meal_parts || []).forEach(p => (parts[p.meal_id] ||= []).push({m: p.member_id, own: +p.own || 0, guest: +p.guest || 0}));
+  const txs = (raw.transactions || []).map(t => ({id: t.id, period: normP(t.period), date: normD(t.date), m: t.member_id, type: t.type, amount: +t.amount || 0,
+    meal: t.meal_id || null, method: t.method || "", note: t.note || null, src: t.src || "", settle: !!t.settle}));
+  const order = Object.fromEntries(members.map((m, i) => [m.id, i]));
+  const meals = (raw.meals || []).map(m => {
+    const ps = (parts[m.id] || []).sort((a, b) => (order[a.m] ?? 99) - (order[b.m] ?? 99));
+    const adv = txs.filter(t => t.type === "advance" && t.meal === m.id).map(t => ({m: t.m, amount: t.amount}));
+    const paid = adv.reduce((s, x) => s + x.amount, 0), total = +m.total || 0;
+    return {id: m.id, period: normP(m.period), date: normD(m.date), restaurant: m.restaurant || "Không rõ", category: m.category || "Khác", event: !!m.event,
+      total, parts: ps, payers: total - paid > 1 ? [{m: "fund", amount: total - paid}, ...adv] : adv, note: m.note || null,
+      formulaNote: m.formula_note || null, src: m.src || ""};
+  }).filter(m => m.parts.length);
+
+  // Danh sách kỳ: từ tháng có dữ liệu sớm nhất đến tháng hiện tại
+  const cur = tzMonth(), ids = [...meals.map(m => m.period), ...txs.map(t => t.period)].filter(Boolean).sort();
+  const first = ids[0] || cur, lastP = [ids.at(-1) || cur, cur].sort().at(-1);
+  const pids = []; for (let [y, mo] = first.split("-").map(Number), g = 0; g < 600; g++, mo === 12 ? (y++, mo = 1) : mo++) { const id = `${y}-${String(mo).padStart(2, "0")}`; pids.push(id); if (id >= lastP) break; }
+  const byP = id => ({ms: meals.filter(m => m.period === id), ts: txs.filter(t => t.period === id)});
+  let prev = {};
+  const periods = pids.map(id => {
+    const {ms, ts} = byP(id), opens = {}, mem = [];
+    members.forEach(M => {
+      const k = M.id, open = M.manager ? 0 : (prev[k] || 0);
+      const dep = ts.filter(t => t.m === k).reduce((s, t) => s + t.amount, 0);
+      const cost = ms.reduce((s, m) => { const p = m.parts.find(x => x.m === k); if (!p) return s; const n = m.parts.reduce((a, q) => a + q.own + q.guest, 0); return s + m.total * (p.own + p.guest) / n; }, 0);
+      const inP = Math.abs(open) >= 1 || dep || cost || (id >= cur && M.active);
+      opens[k] = open; if (inP) mem.push(k);
+      prev[k] = Math.round(open + dep - cost);
+    });
+    return {id, label: `T${+id.slice(5)}/${id.slice(0, 4)}`, opens, members: mem};
+  });
+  members.forEach(M => { const ps = periods.filter(p => p.members.includes(M.id)).map(p => p.id); M.from = ps[0] || cur; M.to = ps.at(-1) || cur; });
+
+  const restaurants = (raw.restaurants || []).map(r => ({id: r.id, name: r.name || null, dish: r.dish, cat: r.cat || "Khác", lat: r.lat ?? null, lon: r.lon ?? null,
+    distanceM: r.distance_m ?? null, sample: !!r.sample_loc, suggest: r.suggest !== false, active: r.active !== false, mapsUrl: r.maps_url || null, sampleLoc: !!r.sample_loc}));
+  const issues = (raw.notes || []).map(n => ({period: normP(n.period) || null, text: n.text, resolved: true}));
+  return {members, periods, meals, txs, restaurants, issues};
+}
+
+/* Các bảng gửi lên máy chủ (đổi tên trường giao diện → tên cột Google Sheets) */
+const ROW = {
+  meals: m => ({id: m.id, period: m.period, date: m.date || "", restaurant: m.restaurant, category: m.category, event: !!(m.event || m.category === "Sự kiện / Quà"),
+    total: m.total, note: m.note || "", formula_note: m.formulaNote || "", src: m.src || "", parts: m.parts.map(p => ({m: p.m, own: p.own, guest: p.guest}))}),
+  transactions: t => ({id: t.id, period: t.period, date: t.date || "", member_id: t.m, type: t.type, amount: t.amount, meal_id: t.meal || "", method: t.method || "",
+    note: t.note || "", src: t.src || "Nhập tay", settle: !!t.settle}),
+  restaurants: r => ({id: r.id, dish: r.dish, name: r.name || "", cat: r.cat, maps_url: r.mapsUrl || "", lat: r.lat ?? "", lon: r.lon ?? "", distance_m: r.distanceM ?? "",
+    suggest: !!r.suggest, active: r.active !== false, sample_loc: !!r.sampleLoc}),
+  members: (m, i) => ({id: m.id, name: m.name, manager: !!m.manager, active: !!m.active, sort: i + 1}),
+};
+
+function bootScreen(html) {
+  const v = document.getElementById("view");
+  if (v) v.innerHTML = `<div class="boot">${html}</div>`;
+}
+const BOOT_SPIN = `<div class="boot-spin" aria-hidden="true"></div><b>Đang tải dữ liệu…</b><span>Lấy số liệu mới nhất từ Google Sheets</span>`;
+
+/* Tải dữ liệu: ưu tiên máy chủ; nếu lỗi mạng thì dùng bản đã lưu lần trước trên máy này. */
+async function bootData(opts = {}) {
+  if (!apiReady()) {
+    if (window.DEMO_RAW) { CONN.from = "demo"; CONN.raw = window.DEMO_RAW; return buildData(window.DEMO_RAW); }
+    bootScreen(`<b>Chưa kết nối dữ liệu</b><span>Mở file <code>config.js</code>, dán đường link Apps Script (kết thúc bằng <code>/exec</code>) vào <code>API_URL</code>. Xem hướng dẫn, bước 3.</span>`);
+    return null;
+  }
+  bootScreen(BOOT_SPIN);
+  try {
+    const j = await apiGet();
+    CONN.from = "api"; CONN.time = j.time; CONN.raw = j.data;
+    lsSet(CACHE_KEY, JSON.stringify({time: j.time, data: j.data}));
+    return buildData(j.data);
+  } catch (e) {
+    const c = opts.admin ? null : JSON.parse(lsGet(CACHE_KEY) || "null");
+    if (c) { CONN.from = "cache"; CONN.time = c.time; CONN.raw = c.data; return buildData(c.data); }
+    bootScreen(`<b>Không tải được dữ liệu</b><span>Kiểm tra kết nối mạng rồi thử lại. (${String(e.message || e).slice(0, 120)})</span><button onclick="location.reload()">Thử lại</button>`);
+    return null;
+  }
+}
+const connLabel = () => CONN.from === "api" ? `Cập nhật lúc ${CONN.time.slice(11, 16)} ${CONN.time.slice(8, 10)}/${CONN.time.slice(5, 7)}`
+  : CONN.from === "cache" ? `Mất kết nối · đang xem bản lưu lúc ${CONN.time.slice(11, 16)} ${CONN.time.slice(8, 10)}/${CONN.time.slice(5, 7)}`
+  : "Bản xem thử với dữ liệu mẫu, chưa nối Google Sheets";
+
+</script>
+<script>
+(async () => {
+
+const DATA = await bootData(); if (!DATA) return;
+document.getElementById("connNote").textContent = connLabel(); document.getElementById("pChip").hidden = false;
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const NF = new Intl.NumberFormat("vi-VN", {maximumFractionDigits:0});
+const vnd = n => { const r = Math.round(n || 0); return (r < 0 ? "−" : "") + NF.format(Math.abs(r)); };
+const vndU = n => vnd(n) + " đ";
+const dash = n => Math.round(n || 0) === 0 ? "—" : vnd(n);
+const short = n => { const a = Math.abs(n); if (a >= 1e6) return (n/1e6).toFixed(a >= 1e7 ? 0 : 1).replace(".", ",") + "tr"; if (a >= 1e3) return Math.round(n/1e3) + "k"; return String(Math.round(n)); };
+const MEM = Object.fromEntries(DATA.members.map(m => [m.id, m]));
+const nm = id => id === "fund" ? "Quỹ chung" : (MEM[id]?.name ?? id);
+const sn = id => id === "fund" ? "Quỹ chung" : nm(id).replace(/^A /, "");
+const PER = DATA.periods, PIDX = Object.fromEntries(PER.map((p, i) => [p.id, i]));
+const plabel = id => PER[PIDX[id]]?.label ?? id;
+const DOW = ["CN","T2","T3","T4","T5","T6","T7"];
+const fdate = d => d ? `${d.slice(8,10)}/${d.slice(5,7)}/${d.slice(0,4)}` : "Chưa rõ ngày";
+const suat = ml => ml.parts.reduce((s, p) => s + p.own + p.guest, 0);
+const EVENT_CAT = "Sự kiện / Quà", isEv = m => m.event || m.category === EVENT_CAT;
+const unit = ml => ml.total / suat(ml);
+const share = (ml, m) => { const p = ml.parts.find(x => x.m === m); return p ? unit(ml) * (p.own + p.guest) : 0; };
+const payerText = ml => ml.payers.map(p => sn(p.m)).join(" + ");
+const mealById = id => DATA.meals.find(m => m.id === id);
+const sortMeals = arr => arr.slice().sort((a, b) => (b.period + (b.date || "")).localeCompare(a.period + (a.date || "")));
+
+function stats(pid, m) {
+  const p = PER[PIDX[pid]];
+  const open = p.opens[m] ?? 0;
+  const tx = DATA.txs.filter(t => t.period === pid && t.m === m);
+  const dep = tx.filter(t => t.type === "deposit").reduce((s, t) => s + t.amount, 0);
+  const adv = tx.filter(t => t.type === "advance").reduce((s, t) => s + t.amount, 0);
+  const meals = DATA.meals.filter(x => x.period === pid && x.parts.some(q => q.m === m));
+  const cost = meals.reduce((s, x) => s + share(x, m), 0);
+  const ps = meals.map(x => x.parts.find(q => q.m === m)), sOwn = ps.reduce((s, q) => s + q.own, 0), sGuest = ps.reduce((s, q) => s + q.guest, 0);
+  const rg = meals.filter(x => !isEv(x)), rgCost = rg.reduce((s, x) => s + share(x, m), 0), rgS = rg.reduce((s, x) => { const q = x.parts.find(q => q.m === m); return s + q.own + q.guest; }, 0);
+  return {nMeals: meals.length, sOwn, sGuest, avg: rgS ? rgCost / rgS : 0, open, dep, adv, cost, close: open + dep + adv - cost, meals, tx, inPeriod: p.members.includes(m)};
+}
+function groupStats(pid) {
+  const p = PER[PIDX[pid]];
+  const rows = p.members.map(m => ({m, ...stats(pid, m)}));
+  const sum = k => rows.reduce((s, r) => s + r[k], 0);
+  const meals = DATA.meals.filter(x => x.period === pid);
+  return {rows, open: sum("open"), dep: sum("dep"), adv: sum("adv"), cost: meals.reduce((s, x) => s + x.total, 0), close: sum("close"), nMeals: meals.length, suat: meals.reduce((s, x) => s + suat(x), 0)};
+}
+
+/* ---------- State ---------- */
+const S = {
+  tab: "overview", period: PER[PER.length - 1].id, member: "",
+  chart: 0, pchart: 5, memberScope: "period", catScope: "period", catBy: "group", fundOpen: false,
+  mf: {scope: "period", q: "", member: "", payer: "", cat: "", rest: "", from: "", to: ""},
+  tf: {scope: "period", member: "", type: "deposit"},
+};
+function readHash() {
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (h.get("tab")) S.tab = h.get("tab");
+  if (h.get("p") && PIDX[h.get("p")] !== undefined) S.period = h.get("p");
+  if (h.get("m") && MEM[h.get("m")]) S.member = h.get("m");
+}
+function writeHash() {
+  const h = new URLSearchParams({tab: S.tab, p: S.period});
+  if (S.tab === "members" && S.member) h.set("m", S.member);
+  try { history.replaceState(null, "", "#" + h.toString()); } catch (e) {}
+}
+function go(tab, patch = {}) {
+  S.tab = tab; Object.assign(S, patch);
+  render(); window.scrollTo({top: 0});
+}
+
+/* ---------- Charts ---------- */
+function barSVG(values, labels, active, unitLabel, raw) {
+  const W = 640, H = 210, pl = 8, pr = 8, pt = 22, pb = 28;
+  const max = Math.max(...values, 1), n = values.length;
+  const bw = (W - pl - pr) / n, gap = Math.min(14, bw * .3);
+  let g = "";
+  [0, .5, 1].forEach(f => { const y = pt + (H - pt - pb) * (1 - f); g += `<line x1="${pl}" x2="${W - pr}" y1="${y}" y2="${y}" stroke="var(--line-2)" stroke-width="1"/>`; });
+  values.forEach((v, i) => {
+    const h = (H - pt - pb) * v / max, x = pl + i * bw + gap / 2, y = H - pb - h, on = i === active;
+    g += `<rect x="${x}" y="${y}" width="${bw - gap}" height="${Math.max(h, v ? 2 : 0)}" rx="3" fill="${on ? "var(--b-on)" : "var(--b-off)"}"><title>${esc(labels[i])}: ${vndU(v)}</title></rect>`;
+    g += `<text x="${x + (bw - gap) / 2}" y="${y - 6}" text-anchor="middle" font-size="11" fill="${on ? "var(--ink)" : "var(--muted)"}" font-weight="${on ? 600 : 400}" class="num">${raw ? v : v ? short(v) : "0"}</text>`;
+    g += `<text x="${x + (bw - gap) / 2}" y="${H - 9}" text-anchor="middle" font-size="11" fill="${on ? "var(--ink)" : "var(--muted)"}" font-weight="${on ? 600 : 400}">${esc(labels[i])}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Biểu đồ cột theo tháng, đơn vị ${unitLabel}">${g}</svg>`;
+}
+function lineSVG(vals, labels, active) {
+  const W = 640, H = 210, pl = 8, pr = 8, pt = 28, pb = 28, ih = H - pt - pb, n = vals.length;
+  const ok = vals.filter(v => v != null); if (!ok.length) return `<div class="empty">Chưa có dữ liệu.</div>`;
+  const lo = Math.min(...ok) * .85, hi = Math.max(...ok) * 1.08, bw = (W - pl - pr) / n;
+  const avg = ok.reduce((a, b) => a + b, 0) / ok.length, Y = v => pt + ih * (1 - (v - lo) / (hi - lo || 1));
+  let g = `<line x1="${pl}" x2="${W - pr}" y1="${Y(avg)}" y2="${Y(avg)}" stroke="var(--muted)" stroke-dasharray="4 4"/><text x="${W - pr}" y="${Y(avg) - 5}" text-anchor="end" font-size="10.5" fill="var(--muted)">TB của bạn ${short(avg)}</text>`;
+  let seg = [], path = "";
+  vals.forEach((v, i) => { const x = pl + i * bw + bw / 2; if (v == null) { if (seg.length) path += "M" + seg.join("L"); seg = []; } else seg.push(x + "," + Y(v)); });
+  if (seg.length) path += "M" + seg.join("L");
+  g += `<path d="${path}" fill="none" stroke="var(--b-on)" stroke-width="2.2" stroke-linejoin="round"/>`;
+  vals.forEach((v, i) => {
+    const x = pl + i * bw + bw / 2, on = i === active;
+    g += `<text x="${x}" y="${H - 9}" text-anchor="middle" font-size="11" fill="${on ? "var(--ink)" : "var(--muted)"}" font-weight="${on ? 600 : 400}">${esc(labels[i])}</text>`;
+    if (v == null) return;
+    g += `<circle cx="${x}" cy="${Y(v)}" r="${on ? 5 : 3.5}" fill="${on ? "var(--b-on)" : "var(--surface)"}" stroke="var(--b-on)" stroke-width="2"><title>${esc(labels[i])}: ${vndU(v)}/suất</title></circle>
+      <text x="${x}" y="${Y(v) - 9}" text-anchor="middle" font-size="10.5" font-weight="${on ? 700 : 500}" fill="var(--ink)" class="num">${short(v)}</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Đường: bình quân chi phí mỗi suất theo tháng">${g}</svg>`;
+}
+function comboSVG(bars, line, labels, active) {
+  const W = 640, H = 220, pl = 8, pr = 8, pt = 26, pb = 28, ih = H - pt - pb;
+  const bmax = Math.max(...bars, 1), lmax = Math.max(...line, 1) * 1.15, n = bars.length;
+  const bw = (W - pl - pr) / n, gap = Math.min(16, bw * .35);
+  let g = "", pts = [];
+  [0, .5, 1].forEach(f => { const y = pt + ih * (1 - f); g += `<line x1="${pl}" x2="${W - pr}" y1="${y}" y2="${y}" stroke="var(--line-2)"/>`; });
+  bars.forEach((v, i) => {
+    const h = ih * v / bmax, x = pl + i * bw + gap / 2, y = H - pb - h, on = i === active, cx = x + (bw - gap) / 2;
+    g += `<rect x="${x}" y="${y}" width="${bw - gap}" height="${Math.max(h, v ? 2 : 0)}" rx="3" fill="${on ? "var(--b-on)" : "var(--b-off)"}"><title>${esc(labels[i])}: chi phí ${vndU(v)}, ${line[i]} bữa</title></rect>`;
+    if (v) g += `<text x="${cx}" y="${H - pb - 4}" text-anchor="middle" font-size="10" fill="${on ? "var(--surface)" : "var(--ink-2)"}" class="num">${short(v)}</text>`;
+    g += `<text x="${cx}" y="${H - 9}" text-anchor="middle" font-size="11" fill="${on ? "var(--ink)" : "var(--muted)"}" font-weight="${on ? 600 : 400}">${esc(labels[i])}</text>`;
+    pts.push([cx, pt + ih * (1 - (.18 + .82 * line[i] / lmax)), line[i], on]);
+  });
+  g += `<polyline points="${pts.map(p => p[0] + "," + p[1]).join(" ")}" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>`;
+  pts.forEach(([x, y, v, on]) => { g += `<circle cx="${x}" cy="${y}" r="${on ? 4.5 : 3.5}" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/><text x="${x}" y="${y - 9}" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink)" class="num">${v}</text>`; });
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cột: chi phí bữa ăn theo tháng; đường: số bữa tham gia theo tháng">${g}</svg>`;
+}
+const mlabel = id => { const p = PER[PIDX[id]]; return p.label.replace(/^T/, "").replace(/\/20(\d\d)$/, "/$1"); };
+function swipe(el, onLeft, onRight) {
+  let x0 = null;
+  el.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, {passive: true});
+  el.addEventListener("touchend", e => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) (dx < 0 ? onLeft : onRight)(); x0 = null; });
+}
+
+/* ---------- Chọn kỳ tổng thể: một nút trên thanh đầu trang ---------- */
+const CHEV = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>`;
+function periodSheetHTML(ids, cur, nowId) {
+  const years = [...new Set(ids.map(id => id.slice(0, 4)))].reverse();
+  return `<div class="sh-h"><div><h3>Chọn kỳ</h3><div class="sub">Áp dụng cho mọi tab</div></div>${X}</div>
+  <div class="pgrid-wrap">${years.map(y => `<div class="pyear">${y}</div><div class="pgrid">${ids.filter(id => id.startsWith(y)).reverse().map(id => `<button class="pcell" aria-pressed="${id === cur}" data-pick="${id}"><b>Tháng ${+id.slice(5, 7)}</b>${id === nowId ? "<small>Tháng này</small>" : ""}</button>`).join("")}</div>`).join("")}</div>`;
+}
+const scopeLink = (all, label) => `<button class="scopelnk" data-scope-toggle>${all ? `Chỉ xem ${label}` : "Xem tất cả kỳ"}</button>`;
+
+const isAll = () => S.mf.scope === "all";
+const LIST_TABS = ["meals", "payments"];
+
+/* ---------- Views ---------- */
+function vOverview() {
+  const G = groupStats(S.period), i = PIDX[S.period], prev = i > 0 ? PER[i - 1].label : null, P = plabel(S.period);
+  const tbl = G.rows.map(r => `<tr>
+      <td><button class="name" data-member="${r.m}">${esc(nm(r.m))}</button>${MEM[r.m].manager ? '<span class="tag">Quản lý</span>' : ""}</td>
+      <td class="num">${vnd(r.open)}</td><td class="num">${dash(r.dep)}</td><td class="num">${dash(r.adv)}</td>
+      <td class="num">${vnd(r.cost)}</td><td class="num">${vnd(r.close)}</td></tr>`).join("");
+  const recent = sortMeals(DATA.meals.filter(m => PIDX[m.period] <= i)).slice(0, 5);
+  return `
+  <h1>Tổng quan ${P}<span class="h1-sub">${G.nMeals} bữa đã ghi nhận trong kỳ</span></h1>
+  <div class="ov-grid"><div class="col-side">
+  ${eatCard()}
+  <section class="sec recent-sec dom-food" aria-labelledby="s4">
+    <div class="sec-h"><h2 id="s4">Bữa ăn gần đây</h2><button class="link" data-act="meals-all">Xem tất cả ›</button></div>
+    <ul class="list">${recent.map(mealItem).join("") || `<li class="empty">Chưa có bữa ăn.</li>`}</ul>
+  </section>
+  </div><div class="col-main">
+
+  <section class="sec fund" id="fundSec" aria-labelledby="s1">
+    <button class="fund-sum" data-act="fund" aria-expanded="${S.fundOpen}" aria-controls="fundDetail">
+      <span class="fs-k"><span id="s1">Quỹ còn lại, tạm tính</span><small>${S.fundOpen ? "thu gọn" : "xem chi tiết"}</small></span>
+      <span class="fs-v num">${vndU(G.close)}</span>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div id="fundDetail" ${S.fundOpen ? "" : "hidden"}>
+    <ul class="qs">
+      <li><span class="op"></span><span class="k">Chuyển từ ${prev ? "chốt " + prev : "đầu kỳ"}</span><span class="v num">${vnd(G.open)}</span></li>
+      <li><span class="op">+</span><span class="k">Đã đóng quỹ <button data-act="payments">Xem ›</button></span><span class="v num">${vnd(G.dep)}</span></li>
+      <li><span class="op">+</span><span class="k">Trả hộ bữa ăn</span><span class="v num">${vnd(G.adv)}</span></li>
+      <li><span class="op">−</span><span class="k">Chi phí · ${G.nMeals} bữa <button data-act="meals">Xem ›</button></span><span class="v num">${vnd(G.cost)}</span></li>
+      <li><span class="op">=</span><span class="k">Cuối kỳ (tạm tính)</span><span class="v num">${vnd(G.close)}</span></li>
+    </ul></div>
+  </section>
+
+  <section class="sec dom-money" aria-labelledby="s2">
+    <div class="sec-h"><h2 id="s2">Đối chiếu theo thành viên</h2><span class="sub">${P} · đơn vị: đ</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Thành viên</th><th>Chốt ${prev ?? "kỳ trước"}</th><th>Đã đóng<br>${P}</th><th>Trả hộ<br>bữa ăn</th><th>Chi phí<br>${P}</th><th>Cuối kỳ<br>(tạm tính)</th></tr></thead>
+      <tbody>${tbl}</tbody>
+      <tfoot><tr><td>Cộng</td><td class="num">${vnd(G.open)}</td><td class="num">${dash(G.dep)}</td><td class="num">${dash(G.adv)}</td><td class="num">${vnd(G.rows.reduce((s, r) => s + r.cost, 0))}</td><td class="num">${vnd(G.close)}</td></tr></tfoot>
+    </table></div>
+    <div class="formula">Cuối kỳ = <code>Chốt kỳ trước + Đã đóng + Trả hộ − Chi phí</code>. Thứ tự theo danh sách thành viên, không xếp hạng. Nhấn tên để xem chi tiết.</div>
+  </section>
+
+  <section class="sec" aria-labelledby="s3">
+    <div class="sec-h"><h2 id="s3">Số liệu cả nhóm theo tháng</h2></div>
+    <div class="sec-b">
+      <div class="seg" role="tablist" id="cTabs">
+        ${["Chi phí bữa ăn", "Tiền đóng quỹ", "Cơ cấu món ăn"].map((t, k) => `<button role="tab" aria-selected="${S.chart === k}" data-chart="${k}">${t}</button>`).join("")}
+      </div>
+      <div class="chart tone-${S.chart === 1 ? "money" : "food"}" id="chart">${chartGroup()}</div>
+      <div class="dots">${[0,1,2].map(k => `<i class="${S.chart === k ? "on" : ""}"></i>`).join("")}</div>
+    </div>
+  </section>
+
+  </div></div>`;
+}
+function chartGroup() {
+  const ids = PER.map(p => p.id), labels = ids.map(mlabel), a = PIDX[S.period];
+  if (S.chart === 0) {
+    const v = ids.map(id => DATA.meals.filter(m => m.period === id).reduce((s, m) => s + m.total, 0));
+    return barSVG(v, labels, a, "đồng") + `<div class="cap"><span>Tổng hóa đơn các bữa, ${PER[0].label} – ${PER[PER.length - 1].label}</span><span>Đơn vị: đ (tr = triệu)</span></div>`;
+  }
+  if (S.chart === 1) {
+    const v = ids.map(id => DATA.txs.filter(t => t.period === id && t.type === "deposit").reduce((s, t) => s + t.amount, 0));
+    return barSVG(v, labels, a, "đồng") + `<div class="cap"><span>Chỉ tính khoản nộp quỹ, không gồm trả hộ</span><span>Đơn vị: đ</span></div>`;
+  }
+  const all = S.catScope === "all", ms = DATA.meals.filter(m => all || m.period === S.period), tot = ms.reduce((s, m) => s + m.total, 0);
+  const by = {}; ms.forEach(m => { const k = S.catBy === "dish" ? m.restaurant : m.category; (by[k] ||= {v: 0, n: 0}); by[k].v += m.total; by[k].n++; });
+  let rows = Object.entries(by).sort((x, y) => y[1].v - x[1].v); const more = rows.length - 10; if (S.catBy === "dish") rows = rows.slice(0, 10);
+  const ctl = `<div class="mini-ctl"><div class="seg sm">${[["period", "Kỳ " + plabel(S.period)], ["all", "12 tháng"]].map(([k, l]) => `<button aria-selected="${S.catScope === k}" data-cat-scope="${k}">${l}</button>`).join("")}</div>
+    <div class="seg sm">${[["group", "Nhóm món"], ["dish", "Từng món"]].map(([k, l]) => `<button aria-selected="${S.catBy === k}" data-cat-by="${k}">${l}</button>`).join("")}</div></div>`;
+  if (!rows.length) return ctl + `<div class="empty">Chưa có bữa ăn trong ${plabel(S.period)}.</div>`;
+  return ctl + `<div class="hbar">${rows.map(([c, o]) => `<span><i class="cdot" style="--cc:${catColor(S.catBy === "dish" ? REST_CAT[c] : c)}"></i>${esc(c)}<small class="cnt">${o.n} bữa</small></span><span class="bar" style="--cc:${catColor(S.catBy === "dish" ? REST_CAT[c] : c)}"><span style="width:${(o.v / rows[0][1].v * 100).toFixed(1)}%"></span></span><span class="val num">${vnd(o.v)} · ${Math.round(o.v / tot * 100)}%</span>`).join("")}</div>
+    <div class="cap"><span>${all ? `${PER[0].label} – ${PER[PER.length - 1].label}` : plabel(S.period)} · ${ms.length} bữa${S.catBy === "dish" && more > 0 ? ` · hiển thị 10 món chi nhiều nhất, còn ${more} món khác` : ""}. Nhóm món suy ra từ tên trong Excel.</span><span>Đơn vị: đ</span></div>`;
+}
+
+const CATCOL = {"Bún": "#12A594", "Cơm": "#E2900B", "Phở": "#E5484D", "Cháo / Lòng": "#AB4ABA", "Bánh mì": "#B88A3E", "Vịt quay": "#A07553",
+  "Lẩu": "#D6409F", "Nhà hàng": "#5B5BD6", "Chả cá": "#0797B9", "Sự kiện / Quà": "#8E4EC6", "Không rõ": "#A1A1AA", "Khác": "#8B8B94"};
+const catColor = c => CATCOL[c] || "#6E7781";
+const REST_CAT = Object.fromEntries(DATA.meals.map(m => [m.restaurant, m.category]));
+function mealItem(ml) {
+  const d = ml.date ? new Date(ml.date + "T00:00:00") : null;
+  const ppl = ml.parts.map(p => esc(sn(p.m)) + (p.guest ? ` <span class="g">(+${p.guest} khách)</span>` : "")).join(", ");
+  return `<li class="meal"><button data-meal="${ml.id}" aria-label="Chi tiết bữa ${esc(ml.restaurant)} ${fdate(ml.date)}">
+    <span class="d" style="--cc:${catColor(ml.category)}">${d ? `<small>${DOW[d.getDay()]}</small><b>${ml.date.slice(8, 10)}</b><small>Th${+ml.date.slice(5, 7)}</small>` : `<small>Chưa</small><b>?</b><small>rõ ngày</small>`}</span>
+    <span class="r">${esc(ml.restaurant)}</span><span class="t num">${vnd(ml.total)}</span>
+    <span class="m2">${suat(ml)} suất · Trả: ${esc(payerText(ml))}</span>
+    <span class="m3">${ppl}</span></button></li>`;
+}
+
+const MF0 = () => ({scope: S.mf?.scope || "period", q: "", member: "", payer: "", cat: "", rest: "", from: "", to: ""});
+function filteredMeals(skipMember) {
+  const f = S.mf, q = f.q.trim().toLowerCase();
+  return sortMeals(DATA.meals.filter(m =>
+    (f.scope === "all" || m.period === S.period) &&
+    (!q || m.restaurant.toLowerCase().includes(q)) &&
+    (skipMember || !f.member || m.parts.some(p => p.m === f.member)) &&
+    (!f.payer || (f.payer === "fund" ? !m.payers.some(p => p.m !== "fund") : f.payer === "member" ? m.payers.some(p => p.m !== "fund") : m.payers.some(p => p.m === f.payer))) &&
+    (!f.cat || m.category === f.cat) && (!f.rest || m.restaurant === f.rest) &&
+    (!f.from || (m.date && m.date >= f.from)) && (!f.to || (m.date && m.date <= f.to))));
+}
+function mealActive() {
+  const f = S.mf, a = [];
+  if (f.payer) a.push(["payer", f.payer === "fund" ? "Quỹ chung trả" : f.payer === "member" ? "Thành viên trả hộ" : sn(f.payer) + " trả"]);
+  if (f.cat) a.push(["cat", f.cat]); if (f.rest) a.push(["rest", f.rest]);
+  if (f.from || f.to) a.push(["date", `${f.from ? fdate(f.from).slice(0, 5) : "…"} – ${f.to ? fdate(f.to).slice(0, 5) : "…"}`]);
+  return a;
+}
+const SEARCH_IC = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>`;
+const FILTER_IC = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>`;
+function vMeals() {
+  const f = S.mf, P = plabel(S.period), base = filteredMeals(true);
+  const counts = {}; base.forEach(m => m.parts.forEach(p => { counts[p.m] = (counts[p.m] || 0) + 1; }));
+  if (f.member && !counts[f.member]) f.member = "";
+  const list = f.member ? base.filter(m => m.parts.some(p => p.m === f.member)) : base, act = mealActive();
+  let groups = "", cur = null;
+  list.forEach(m => { if (m.period !== cur) { cur = m.period; const g = list.filter(x => x.period === cur); groups += `<li class="group-h"><span>${plabel(cur)}</span><span class="num">${g.length} bữa · ${vndU(g.reduce((s, x) => s + x.total, 0))}</span></li>`; } groups += mealItem(m); });
+  return `
+  <h1>Bữa ăn</h1>
+  <div class="sbar"><label class="sfield">${SEARCH_IC}<input id="fq" type="search" value="${esc(f.q)}" placeholder="Tìm tên quán" aria-label="Tìm theo tên quán"></label>
+    <button class="fbtn${act.length ? " on" : ""}" data-open-mfilter aria-label="Bộ lọc">${FILTER_IC}Lọc${act.length ? `<i>${act.length}</i>` : ""}</button></div>
+  ${act.length ? `<div class="achips">${act.map(([k, l]) => `<button class="achip" data-rm-mf="${k}" aria-label="Bỏ lọc ${esc(l)}">${esc(l)}<span aria-hidden="true">×</span></button>`).join("")}<button class="clear" data-rm-mf="*">Xóa lọc</button></div>` : ""}
+  <div class="mfilter"><span>Người ăn:</span><button class="fchip" aria-pressed="${!f.member}" data-mf-mem="">Tất cả</button>
+    ${DATA.members.filter(m => counts[m.id]).map(m => `<button class="fchip" aria-pressed="${f.member === m.id}" data-mf-mem="${m.id}">${esc(sn(m.id))} <b class="num">${counts[m.id]}</b></button>`).join("")}</div>
+  <div class="rsum"><span><b class="num">${list.length}</b> bữa · <b class="num">${vndU(list.reduce((s, m) => s + m.total, 0))}</b></span><span class="sc">${f.scope === "all" ? "Tất cả kỳ" : P}${scopeLink(f.scope === "all", P)}</span></div>
+  <section class="sec" style="margin-top:6px"><ul class="list">${groups || `<li class="empty"><b>Không có bữa ăn phù hợp</b>Thử bỏ bớt bộ lọc hoặc chọn “Tất cả kỳ”.</li>`}</ul></section>`;
+}
+function mealFilterSheet() {
+  const f = {...S.mf}; S._mtmp = f;
+  const cats = [...new Set(DATA.meals.map(m => m.category))].sort((a, b) => a.localeCompare(b, "vi"));
+  const rests = [...new Set(DATA.meals.map(m => m.restaurant))].sort((a, b) => a.localeCompare(b, "vi"));
+  const payers = DATA.members.filter(m => DATA.meals.some(ml => ml.payers.some(p => p.m === m.id)));
+  const chip = (k, v, l) => `<button class="chip" aria-pressed="${f[k] === v}" data-mfset="${k}" data-v="${esc(v)}">${esc(l)}</button>`;
+  openSheet(`<div class="sh-h"><div><h3>Bộ lọc bữa ăn</h3><div class="sub">${f.scope === "all" ? "Tất cả kỳ" : "Kỳ " + plabel(S.period)}</div></div>${X}</div>
+    <div class="fsec"><div class="flbl">Người trả</div><div class="chips">${chip("payer", "", "Tất cả")}${chip("payer", "fund", "Quỹ chung")}${chip("payer", "member", "Thành viên trả hộ")}</div>
+      <select class="fsel" id="mfPayer" aria-label="Chọn người trả hộ"><option value="">Hoặc chọn một người trả hộ…</option>${payers.map(m => `<option value="${m.id}" ${f.payer === m.id ? "selected" : ""}>${esc(m.name)}</option>`).join("")}</select></div>
+    <div class="fsec"><div class="flbl">Nhóm món</div><div class="chips">${chip("cat", "", "Tất cả")}${cats.map(c => chip("cat", c, c)).join("")}</div></div>
+    <div class="fsec"><div class="flbl">Quán</div><select class="fsel" id="mfRest"><option value="">Tất cả quán</option>${rests.map(r => `<option ${f.rest === r ? "selected" : ""}>${esc(r)}</option>`).join("")}</select></div>
+    <div class="fsec two"><label><div class="flbl">Từ ngày</div><input type="date" class="fsel" id="mfFrom" value="${f.from}"></label><label><div class="flbl">Đến ngày</div><input type="date" class="fsel" id="mfTo" value="${f.to}"></label></div>
+    <div class="ffoot"><button class="btn" data-mf-reset>Đặt lại</button><button class="btn pri" data-mf-apply>Xem kết quả</button></div>`);
+}
+
+function vMembers() {
+  const P = plabel(S.period);
+  const sel = `<section class="sec"><div class="picker"><label class="f">Thành viên
+    <select id="mSel"><option value="" ${S.member ? "" : "selected"}>— Chọn thành viên —</option>${DATA.members.map(m => `<option value="${m.id}" ${m.id === S.member ? "selected" : ""}>${esc(m.name)}${m.manager ? " (quản lý)" : ""}</option>`).join("")}</select></label></div></section>`;
+  if (!S.member) return `<h1>Thành viên</h1>${sel}<section class="sec"><div class="empty"><b>Chọn thành viên để xem chi tiết</b>Bạn sẽ thấy số dư, tiền đã đóng, chi phí từng bữa và lịch sử giao dịch của người được chọn.</div></section>`;
+  const m = S.member, st = stats(S.period, m), M = MEM[m], i = PIDX[S.period], prev = i > 0 ? PER[i - 1].label : "kỳ trước";
+  const myPer = PER.filter(p => p.members.includes(m));
+  const scopeAll = S.memberScope === "all";
+  const meals = sortMeals(DATA.meals.filter(x => x.parts.some(q => q.m === m) && (scopeAll || x.period === S.period)));
+  const txs = DATA.txs.filter(t => t.m === m && (scopeAll || t.period === S.period)).sort((a, b) => b.period.localeCompare(a.period));
+  const pv = [
+    myPer.map(p => stats(p.id, m).cost),
+    myPer.map(p => stats(p.id, m).dep),
+    myPer.map(p => stats(p.id, m).adv),
+    myPer.map(p => stats(p.id, m).nMeals),
+    myPer.map(p => Math.round(stats(p.id, m).avg) || null)];
+  const PU = ["đ", "đ", "đ", "bữa", "đ/suất", "đ"];
+  if (![5, 4, 1, 2].includes(S.pchart)) S.pchart = 5;
+  const pAct = myPer.findIndex(p => p.id === S.period);
+  return `<h1>Thành viên</h1>${sel}
+  <section class="sec">
+    <div class="sec-h"><h2 class="ico-user">${esc(M.name)}</h2><span class="sub">${M.manager ? "Quản lý · " : ""}Có dữ liệu ${plabel(M.from)} – ${plabel(M.to)}</span></div>
+    ${st.inPeriod ? `<ul class="ledger">
+      <li><span>Chốt ${prev}</span><span class="num">${vndU(st.open)}</span></li>
+      <li><span><span class="op">+</span>Đã đóng quỹ ${P}</span><span class="num">${vndU(st.dep)}</span></li>
+      <li><span><span class="op">+</span>Trả hộ bữa ăn</span><span class="num">${vndU(st.adv)}</span></li>
+      <li><span><span class="op">−</span>Chi phí bữa ăn (${st.meals.length} bữa)</span><span class="num">${vndU(st.cost)}</span></li>
+      <li><span>Cuối kỳ ${P} (tạm tính)</span><span class="num">${vndU(st.close)}</span></li></ul>
+      <div class="mstats"><div><span>Số bữa ${P}</span><b class="num">${st.nMeals}</b>${st.sGuest ? `<small>+${st.sGuest} suất khách</small>` : ""}</div>
+        <div><span>Bình quân/suất</span><b class="num">${st.avg ? vnd(st.avg) : "—"}</b><small>đ</small></div></div>`
+      : `<div class="empty">Không có trong bảng kỳ ${P}.</div>`}
+  </section>
+  <section class="sec">
+    <div class="sec-h"><h2 class="ico-chart">Lịch sử của ${esc(sn(m))}</h2><span class="sub">chỉ so với chính mình</span></div>
+    <div class="sec-b">
+      <div class="seg" role="tablist">${["Chi phí & số bữa", "Bình quân/suất", "Tiền đóng quỹ", "Trả hộ"].map((t, k) => [t, [5, 4, 1, 2][k]]).map(([t, k]) => `<button role="tab" aria-selected="${S.pchart === k}" data-pchart="${k}">${t}</button>`).join("")}</div>
+      <div class="chart tone-${S.pchart === 1 ? "money" : S.pchart === 2 ? "adv" : "food"}" id="pchart">${S.pchart === 5 ? comboSVG(pv[0], pv[3], myPer.map(p => mlabel(p.id)), pAct) : S.pchart === 4 ? lineSVG(pv[4].map((v, i) => pv[3][i] ? v : null), myPer.map(p => mlabel(p.id)), pAct) : barSVG(pv[S.pchart], myPer.map(p => mlabel(p.id)), pAct, PU[S.pchart])}
+        <div class="cap"><span>${plabel(myPer[0].id)} – ${plabel(myPer[myPer.length - 1].id)}</span><span>${S.pchart === 5 ? `<i class="lg bar"></i>Chi phí (đ) <i class="lg line"></i>Số bữa` : "Đơn vị: " + PU[S.pchart]}</span></div></div>
+      <div class="dots">${[5, 4, 1, 2].map(k => `<i class="${S.pchart === k ? "on" : ""}"></i>`).join("")}</div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="sec-h" style="flex-wrap:wrap"><div class="seg" role="tablist" style="flex:1">
+      <button role="tab" aria-selected="${!scopeAll}" data-mscope2="period">Kỳ ${P}</button>
+      <button role="tab" aria-selected="${scopeAll}" data-mscope2="all">Tất cả kỳ</button></div></div>
+    <div class="group-h"><span>Bữa đã tham gia</span><span class="num">${meals.length} bữa · ${vndU(meals.reduce((s, x) => s + share(x, m), 0))}</span></div>
+    ${meals.map(x => { const p = x.parts.find(q => q.m === m); return `<div class="mrow"><button class="lk" data-meal="${x.id}">${esc(x.restaurant)}</button><span class="num">${vnd(share(x, m))}</span>
+      <span class="sm">${fdate(x.date)} · ${p.own + p.guest} suất${p.guest ? ` (gồm ${p.guest} khách)` : ""} × ${vnd(unit(x))} đ</span><span class="sm num">HĐ ${vnd(x.total)}</span></div>`; }).join("") || `<div class="empty">Không có bữa ăn.</div>`}
+    <div class="group-h"><span>Giao dịch</span><span class="num">${txs.length} khoản</span></div>
+    ${txs.map(txRow).join("") || `<div class="empty">Không có giao dịch.</div>`}
+  </section>`;
+}
+
+function txRow(t) {
+  const ml = t.meal ? mealById(t.meal) : null;
+  return `<div class="mrow"><span>${esc(nm(t.m))}<span class="badge ${t.type === "deposit" ? "dep" : "adv"}">${t.type === "deposit" ? "Nộp quỹ" : "Trả hộ"}</span></span><span class="num" style="font-weight:600">${vnd(t.amount)}</span>
+    <span class="sm">Kỳ ${plabel(t.period)} · Ngày: chưa ghi trong Excel${t.note && !ml ? " · " + esc(t.note) : ""}</span><span></span>
+    ${ml ? `<button class="tx-link" data-meal="${ml.id}">Trả hóa đơn bữa ${fdate(ml.date)} · ${esc(ml.restaurant)} ›</button><span></span>` : ""}</div>`;
+}
+
+function vPayments() {
+  const f = S.tf, P = plabel(S.period), type = f.type || "deposit"; f.scope = S.mf.scope;
+  const base = DATA.txs.filter(t => (f.scope === "all" || t.period === S.period) && t.type === type);
+  const counts = {}; base.forEach(t => { counts[t.m] = (counts[t.m] || 0) + 1; });
+  if (f.member && !counts[f.member]) f.member = "";
+  const list = base.filter(t => !f.member || t.m === f.member).sort((a, b) => b.period.localeCompare(a.period) || a.m.localeCompare(b.m));
+  const all = DATA.txs.filter(t => f.scope === "all" || t.period === S.period);
+  const nDep = all.filter(t => t.type === "deposit").length, nAdv = all.filter(t => t.type === "advance").length;
+  let body = "", cur = null;
+  list.forEach(t => { if (t.period !== cur) { cur = t.period; const g = list.filter(x => x.period === cur); body += `<div class="group-h"><span>${plabel(cur)}</span><span class="num">${g.length} khoản · ${vndU(g.reduce((s, x) => s + x.amount, 0))}</span></div>`; } body += txRow(t); });
+  return `<h1>Đóng tiền</h1>
+  <div class="seg ctl-seg tseg" role="tablist" style="margin-top:8px"><button role="tab" aria-selected="${type === "deposit"}" data-ttype="deposit">Nộp quỹ <b class="num">${nDep}</b></button><button role="tab" aria-selected="${type === "advance"}" data-ttype="advance">Trả hộ bữa ăn <b class="num">${nAdv}</b></button></div>
+  <p class="hint" style="margin:8px 2px 0">${type === "deposit" ? "Tiền thành viên nộp vào quỹ chung." : "Thành viên trực tiếp trả hóa đơn bữa ăn cho cả nhóm. Số tiền được tính có cho người trả, không tính là nộp quỹ."}</p>
+  <div class="mfilter"><span>${type === "deposit" ? "Người nộp:" : "Người trả:"}</span><button class="fchip" aria-pressed="${!f.member}" data-tf-mem="">Tất cả</button>
+    ${DATA.members.filter(m => counts[m.id]).map(m => `<button class="fchip" aria-pressed="${f.member === m.id}" data-tf-mem="${m.id}">${esc(sn(m.id))} <b class="num">${counts[m.id]}</b></button>`).join("")}</div>
+  <div class="rsum"><span><b class="num">${list.length}</b> khoản · <b class="num">${vndU(list.reduce((s, x) => s + x.amount, 0))}</b></span><span class="sc">${f.scope === "all" ? "Tất cả kỳ" : P}${scopeLink(f.scope === "all", P)}</span></div>
+  <section class="sec dom-money" style="margin-top:6px">${body || `<div class="empty"><b>Không có khoản nào</b>Không có khoản phù hợp trong phạm vi đang chọn.</div>`}</section>`;
+}
+
+/* ---------- Sheets ---------- */
+function openSheet(html) { $("#sheet").innerHTML = `<div class="grab"></div>` + html; $("#ov").classList.add("open"); $("#ov").setAttribute("aria-hidden", "false"); document.body.style.overflow = "hidden"; $("#sheet .x")?.focus(); }
+function closeSheet() { $("#ov").classList.remove("open"); $("#ov").setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; }
+const X = `<button class="x" aria-label="Đóng"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`;
+function mealSheet(id) {
+  const ml = mealById(id), n = suat(ml), u = unit(ml);
+  const rows = ml.parts.map(p => ({p, a: Math.round(u * (p.own + p.guest))}));
+  const diff = ml.total - rows.reduce((s, r) => s + r.a, 0);
+  openSheet(`<div class="sh-h"><div><h3>${esc(ml.restaurant)}</h3><div class="sub">${fdate(ml.date)} · ${esc(ml.category)} · Kỳ ${plabel(ml.period)}</div>${(() => { const c = CAT.find(x => x.dish === ml.restaurant); return c && dirUrl(c) ? `<div class="mdir">${dirBtn(c, "lnkdir")}<span>${distTxt(c)}</span></div>` : ""; })()}</div>${X}</div>
+    <div class="kv"><div><div class="k">Tổng hóa đơn</div><div class="v num">${vndU(ml.total)}</div></div><div><div class="k">Tổng số suất</div><div class="v num">${n} suất</div></div>
+      <div><div class="k">Đơn giá mỗi suất</div><div class="v num">${vndU(u)}</div></div><div><div class="k">Cách chia</div><div class="v">Chia đều theo suất</div></div></div>
+    <div class="payers"><div class="k">Người thanh toán thực tế</div>${ml.payers.map(p => `<div><span>${esc(nm(p.m))}${p.unmatched ? ' <span class="tag">chưa thấy ghi có</span>' : ""}</span><span class="num">${vndU(p.amount)}</span></div>`).join("")}</div>
+    <table><thead><tr><th>Người tham gia</th><th>Suất TV</th><th>Suất khách</th><th>Phân bổ (đ)</th></tr></thead>
+      <tbody>${rows.map(({p, a}) => `<tr><td>${esc(nm(p.m))}</td><td class="num">${p.own}</td><td class="num ${p.guest ? "" : "dim"}">${p.guest || "—"}</td><td class="num">${vnd(a)}</td></tr>`).join("")}</tbody>
+      <tfoot><tr><td>Cộng (${ml.parts.length} người)</td><td class="num">${ml.parts.reduce((s, p) => s + p.own, 0)}</td><td class="num">${ml.parts.reduce((s, p) => s + p.guest, 0) || "—"}</td><td class="num">${vnd(ml.total - diff)}</td></tr></tfoot></table>
+    <div class="note">Phân bổ = số suất × ${vndU(u)}, làm tròn đến đồng. ${diff ? `Chênh lệch làm tròn so với hóa đơn: <b class="num">${vnd(diff)} đ</b> (Excel giữ số lẻ khi cộng dồn số dư).` : "Tổng phân bổ khớp tổng hóa đơn."}
+      ${ml.formulaNote ? `<br>${esc(ml.formulaNote)}.` : ""}${ml.note ? `<br>Ghi chú: ${esc(ml.note)}.` : ""}<br>Nguồn: ${esc(ml.src)}.</div>`);
+}
+function issuesSheet() {
+  openSheet(`<div class="sh-h"><div><h3>Ghi chú dữ liệu</h3><div class="sub">Các điều chỉnh đã được quản lý quỹ xác nhận khi chuyển dữ liệu từ Excel</div></div>${X}</div>
+    <ul class="issues">${DATA.issues.map(x => `<li><small>${x.period ? plabel(x.period) : "Chung"}</small>${esc(x.text)}</li>`).join("")}</ul>`);
+}
+
+/* ---------- Hôm nay ăn gì ---------- */
+/* Cấu hình */
+const CONFIG = {
+  office: {name: "Số 1 Giang Văn Minh, Ba Đình", lat: 21.03166, lon: 105.82729},
+  tz: "Asia/Ho_Chi_Minh",
+  lunchHours: [11, 12, 13],
+  walkMPerMin: 75,
+  rules: {rainProb: 50, rainMm: 0.5, stormProb: 70, stormMm: 2, hotFeels: 35, coldTemp: 16, humid: 85, aqiBad: 151, aqiVeryBad: 201,
+          maxM: {storm: 150, rain: 250, dust2: 150, dust: 250, hot: 300}},
+};
+const RESTAURANTS = DATA.restaurants;
+const WSTATE = {
+  storm: {label: "Mưa to / giông", advice: `Chỉ gợi ý quán rất gần (≤ ${CONFIG.rules.maxM.storm} m)`},
+  rain: {label: "Có mưa", advice: `Ưu tiên quán gần (≤ ${CONFIG.rules.maxM.rain} m), nhớ mang ô`},
+  dust2: {label: "Không khí rất xấu", advice: `Đeo khẩu trang, chỉ đi quán rất gần (≤ ${CONFIG.rules.maxM.dust2} m)`},
+  dust: {label: "Không khí xấu", advice: `Nên đeo khẩu trang, hạn chế đi xa (≤ ${CONFIG.rules.maxM.dust} m)`},
+  hot: {label: "Nắng nóng", advice: `Hạn chế đi xa (≤ ${CONFIG.rules.maxM.hot} m)`},
+  cold: {label: "Trời lạnh", advice: "Ưu tiên món nước nóng (phở, bún, cháo)"},
+  humid: {label: "Độ ẩm cao", advice: "Trời oi/nồm, đường có thể trơn"},
+  nice: {label: "Dễ chịu", advice: "Không giới hạn khoảng cách"},
+  unknown: {label: "Chưa có dữ liệu thời tiết", advice: "Gợi ý tạm thời không xét thời tiết"},
+};
+const SIM = {nice: {}, rain: {rain: 1}, storm: {storm: 1}, hot: {hot: 1}, cold: {cold: 1}, dust: {dust: 1}};
+const SOUP = ["Phở", "Bún", "Cháo / Lòng", "Lẩu"];
+const hav = (a, b, c, d) => { const R = 6371e3, r = x => x * Math.PI / 180, dl = r(c - a), dn = r(d - b);
+  const h = Math.sin(dl / 2) ** 2 + Math.cos(r(a)) * Math.cos(r(c)) * Math.sin(dn / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
+const CAT = (() => {
+  const hist = {};
+  DATA.meals.filter(x => !isEv(x) && x.restaurant !== "Không rõ").forEach(x => { const h = hist[x.restaurant] ||= {n: 0, per: 0, last: null}; h.n++; h.per += x.total / suat(x); if (x.date && (!h.last || x.date > h.last)) h.last = x.date; });
+  return RESTAURANTS.filter(r => r.active).map(r => {
+    const h = hist[r.dish] || {n: 0, per: 0, last: null};
+    const dist = r.distanceM ?? (r.lat != null ? Math.round(hav(CONFIG.office.lat, CONFIG.office.lon, r.lat, r.lon) * 1.3) : null);
+    return {...r, n: h.n, per: h.n ? h.per / h.n : null, last: h.last, dist, walk: dist != null ? Math.max(1, Math.ceil(dist / CONFIG.walkMPerMin)) : null};
+  }).sort((a, b) => a.cat.localeCompare(b.cat, "vi") || b.n - a.n);
+})();
+const CATS = [...new Set(CAT.map(c => c.cat))];
+const todayStr = () => new Intl.DateTimeFormat("en-CA", {timeZone: CONFIG.tz, year: "numeric", month: "2-digit", day: "2-digit"}).format(new Date());
+const recentDishes = () => sortMeals(DATA.meals.filter(m => m.date && m.date < todayStr())).slice(0, 3).map(m => m.restaurant);
+const hashStr = s => { let h = 2166136261; for (const ch of s) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
+const seeded = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const rnd = n => { try { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; } catch (e) { return Math.floor(Math.random() * n); } };
+const dirUrl = c => c?.lat != null ? `https://www.google.com/maps/dir/?api=1&origin=${CONFIG.office.lat},${CONFIG.office.lon}&destination=${c.lat},${c.lon}&travelmode=walking` : (c?.mapsUrl || null);
+const dirBtn = (c, cls = "btn") => { const u = dirUrl(c); return u ? `<a class="${cls} dir" href="${esc(u)}" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2-8z"/></svg>Chỉ đường</a>` : ""; };
+const distTxt = c => c.dist == null ? "chưa có khoảng cách" : `≈ ${c.dist} m · ${c.walk} phút đi bộ`;
+const priceTxt = c => c.per ? `~${vnd(Math.round(c.per / 1000) * 1000)} đ/suất` : "chưa có giá tham khảo";
+const dec = (n, k = 1) => n == null ? "—" : n.toFixed(k).replace(".", ",");
+
+/* Thời tiết + bụi mịn: Open-Meteo (không cần API key) */
+const W = {status: "loading", aq: "loading", sim: ""};
+const AQI_LV = [[50, "Tốt"], [100, "Trung bình"], [150, "Kém"], [200, "Xấu"], [300, "Rất xấu"], [1e9, "Nguy hại"]];
+const aqiLabel = v => v == null ? "—" : AQI_LV.find(([m]) => v <= m)[1];
+const uvLabel = v => v == null ? "" : v < 3 ? "Thấp" : v < 6 ? "Trung bình" : v < 8 ? "Cao" : v < 11 ? "Rất cao" : "Cực cao";
+const codeTxt = c => c >= 95 ? "Giông" : c >= 80 ? "Mưa rào" : c >= 61 ? "Mưa" : c >= 51 ? "Mưa phùn" : c >= 45 ? "Sương mù" : c >= 3 ? "Nhiều mây" : c >= 1 ? "Ít mây" : "Trời quang";
+async function getJSON(url) { const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 8000); try { return await (await fetch(url, {signal: ctl.signal})).json(); } finally { clearTimeout(to); } }
+const lunchIdx = H => H.time.map((t, i) => [t.slice(0, 10), +t.slice(11, 13), i]).filter(([d, h]) => d === todayStr() && CONFIG.lunchHours.includes(h)).map(([, , i]) => i);
+async function loadWeather() {
+  const o = CONFIG.office, tz = encodeURIComponent(CONFIG.tz);
+  const wUrl = `https://api.open-meteo.com/v1/forecast?latitude=${o.lat}&longitude=${o.lon}&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation_probability,precipitation,weather_code,uv_index,wind_speed_10m&timezone=${tz}&forecast_days=1`;
+  const aUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${o.lat}&longitude=${o.lon}&hourly=pm2_5,pm10,us_aqi&timezone=${tz}&forecast_days=1`;
+  const [wr, ar] = await Promise.allSettled([getJSON(wUrl), getJSON(aUrl)]);
+  try {
+    const H = wr.value.hourly, idx = lunchIdx(H); if (!idx.length) throw 0;
+    const col = k => idx.map(i => H[k][i] ?? 0), mx = k => Math.max(...col(k));
+    Object.assign(W, {status: "ok", temp: mx("temperature_2m"), feels: mx("apparent_temperature"), hum: Math.round(col("relative_humidity_2m").reduce((a, b) => a + b, 0) / idx.length),
+      prob: mx("precipitation_probability"), mm: col("precipitation").reduce((a, b) => a + b, 0), code: mx("weather_code"), uv: mx("uv_index"), wind: mx("wind_speed_10m"),
+      hours: idx.map(i => ({h: +H.time[i].slice(11, 13), temp: H.temperature_2m[i], prob: H.precipitation_probability[i], code: H.weather_code[i], hum: H.relative_humidity_2m[i]})),
+      at: new Date().toLocaleTimeString("vi-VN", {hour: "2-digit", minute: "2-digit", timeZone: CONFIG.tz})});
+  } catch (e) { W.status = "error"; }
+  try {
+    const A = ar.value.hourly, idx = lunchIdx(A); if (!idx.length) throw 0;
+    const col = k => idx.map(i => A[k][i]).filter(v => v != null);
+    Object.assign(W, {aq: "ok", pm25: Math.max(...col("pm2_5")), pm10: Math.max(...col("pm10")), aqi: Math.max(...col("us_aqi"))});
+    (W.hours || []).forEach((h, k) => { h.pm25 = A.pm2_5[idx[k]]; });
+  } catch (e) { W.aq = "error"; }
+  refreshEat();
+}
+/* Trả về các điều kiện đang áp dụng, bán kính tối đa và khóa dùng để cố định gợi ý */
+function wInfo() {
+  const r = CONFIG.rules; let k = {};
+  if (W.sim) k = {...SIM[W.sim]};
+  else {
+    if (W.status === "ok") {
+      if (W.code >= 95 || (W.prob >= r.stormProb && W.mm >= r.stormMm)) k.storm = 1;
+      else if (W.prob >= r.rainProb || W.mm >= r.rainMm || (W.code >= 51 && W.code <= 82)) k.rain = 1;
+      if (W.feels >= r.hotFeels) k.hot = 1;
+      if (W.temp <= r.coldTemp) k.cold = 1;
+      if (W.hum >= r.humid) k.humid = 1;
+    }
+    if (W.aq === "ok") { if (W.aqi >= r.aqiVeryBad) k.dust2 = 1; else if (W.aqi >= r.aqiBad) k.dust = 1; }
+  }
+  const keys = Object.keys(k), known = W.sim || W.status === "ok" || W.aq === "ok";
+  const effective = keys.filter(x => x !== "humid");
+  const primary = !known ? "unknown" : (["storm", "rain", "dust2", "dust", "hot", "cold"].find(x => k[x]) || (keys.includes("humid") ? "humid" : "nice"));
+  const lim = effective.map(x => r.maxM[x]).filter(Boolean);
+  return {keys, primary, maxM: lim.length ? Math.min(...lim) : null, seedKey: known ? (effective.sort().join("+") || "nice") : "unknown",
+          conds: keys.length ? keys : [known ? "nice" : "unknown"]};
+}
+const wState = () => wInfo().primary;
+const WICON = {
+  nice: '<circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>',
+  hot: '<circle cx="12" cy="12" r="5.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/>',
+  rain: '<path d="M7 15.5a4.5 4.5 0 1 1 1.2-8.8A5.5 5.5 0 0 1 18.5 9a3.3 3.3 0 0 1-.5 6.5z"/><path d="M8.5 18.5l-1 2.5M12.5 18.5l-1 2.5M16.5 18.5l-1 2.5"/>',
+  storm: '<path d="M7 14.5a4.5 4.5 0 1 1 1.2-8.8A5.5 5.5 0 0 1 18.5 8a3.3 3.3 0 0 1-.5 6.5"/><path d="M12.5 12l-2.5 4.5h3.5L11 21"/>',
+  cold: '<path d="M12 2.5v19M4 7l16 10M4 17L20 7"/><path d="M9.5 4.5L12 7l2.5-2.5M9.5 19.5L12 17l2.5 2.5"/>',
+  dust: '<path d="M3 8h11a3 3 0 1 0-3-3M3 12h16a3 3 0 1 1-3 3M3 16h8"/>',
+  humid: '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+  unknown: '<path d="M7 16.5a4.5 4.5 0 1 1 1.2-8.8A5.5 5.5 0 0 1 18.5 10a3.3 3.3 0 0 1-.5 6.5z"/>',
+};
+WICON.dust2 = WICON.dust;
+const codeIcon = c => c >= 95 ? "storm" : c >= 51 ? "rain" : c >= 3 ? "unknown" : "nice";
+const wIcon = (s, z = 22) => `<svg width="${z}" height="${z}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${WICON[s] || WICON.unknown}</svg>`;
+const wShort = () => {
+  if (W.sim) return `${WSTATE[wState()].label} (xem thử)`;
+  if (W.status === "loading") return "Đang tải thời tiết…";
+  const p = [];
+  if (W.status === "ok") p.push(`${Math.round(W.temp)}°C`, `ẩm ${W.hum}%`, `mưa ${W.prob}%`);
+  if (W.aq === "ok") p.push(`PM2.5 ${Math.round(W.pm25)}`);
+  return p.length ? p.join(" · ") : "Chưa lấy được thời tiết";
+};
+
+/* Gợi ý cố định trong ngày: cùng ngày + cùng điều kiện thời tiết => cùng kết quả cho mọi người */
+function dailySuggestion() {
+  const day = todayStr(), I = wInfo(), maxM = I.maxM, recent = recentDishes(), why = [];
+  let pool = CAT.filter(c => c.suggest && c.dist != null).sort((a, b) => a.id.localeCompare(b.id));
+  const noRecent = pool.filter(c => !recent.includes(c.dish)); if (noRecent.length) { pool = noRecent; why.push(`Không trùng 3 bữa gần nhất (${recent.join(", ")})`); }
+  const why0 = I.keys.filter(x => x !== "humid").map(x => WSTATE[x].label).join(", ");
+  if (maxM) {
+    const near = pool.filter(c => c.dist <= maxM);
+    if (near.length) { pool = near; why.unshift(`${why0}: chỉ chọn trong ${near.length} quán ≤ ${maxM} m`); }
+    else { pool = pool.slice().sort((a, b) => a.dist - b.dist).slice(0, 3); why.unshift(`${why0}: không có quán ≤ ${maxM} m, chọn trong 3 quán gần nhất`); }
+  } else if (I.primary === "nice") why.unshift("Thời tiết dễ chịu: không giới hạn khoảng cách");
+  else if (I.primary === "unknown") why.unshift("Chưa có dữ liệu thời tiết: chọn theo lịch sử ăn của nhóm");
+  if (I.keys.includes("cold")) why.unshift("Trời lạnh: ưu tiên món nước nóng");
+  if (!pool.length) return null;
+  const w = pool.map(c => (1 + Math.sqrt(c.n)) * (I.keys.includes("cold") && SOUP.includes(c.cat) ? 1.8 : 1) * (I.keys.includes("hot") ? 1.3 - c.dist / 1000 : 1));
+  const tot = w.reduce((a, b) => a + b, 0), r = seeded(hashStr(`${day}|${I.seedKey}|v2`))() * tot;
+  let acc = 0, i = 0; for (; i < pool.length - 1; i++) { acc += w[i]; if (r < acc) break; }
+  return {c: pool[i], why, day, poolSize: pool.length};
+}
+
+const R = {mode: "suggest", pick: null, rolling: false, fitWeather: true, sel: new Set(CAT.filter(c => c.suggest).map(c => c.name ?? c.dish))};
+const key = c => c.name ?? c.dish;
+
+function weatherPanel() {
+  const I = wInfo(), s = I.primary;
+  const live = !W.sim && W.status === "ok";
+  let top;
+  if (W.sim) top = `<div class="wx-d">Đang xem thử kịch bản “${WSTATE[s].label}”, không phải dự báo thật.</div>`;
+  else if (W.status === "loading") top = `<div class="wx-d">Đang tải dự báo…</div>`;
+  else if (W.status !== "ok") top = `<div class="wx-d">Không kết nối được dịch vụ thời tiết. Kiểm tra mạng rồi mở lại.</div>`;
+  else top = `<div class="wx-d">${codeTxt(W.code)} · trưa nay ${CONFIG.lunchHours[0]}:00–${CONFIG.lunchHours.at(-1) + 1}:00</div>`;
+  const cell = (k, v, sub) => `<div><span class="k">${k}</span><b class="num">${v}</b>${sub ? `<small>${sub}</small>` : ""}</div>`;
+  const grid = (live || (!W.sim && W.aq === "ok")) ? `<div class="wx-grid">
+      ${live ? cell("Nhiệt độ", `${Math.round(W.temp)}°C`, `cảm giác ${Math.round(W.feels)}°C`) : ""}
+      ${live ? cell("Độ ẩm", `${W.hum}%`, W.hum >= CONFIG.rules.humid ? "cao" : W.hum <= 45 ? "khô" : "bình thường") : ""}
+      ${!W.sim && W.aq === "ok" ? cell("Bụi mịn PM2.5", `${Math.round(W.pm25)}`, `µg/m³ · AQI ${Math.round(W.aqi)} ${aqiLabel(W.aqi)}`) : cell("Bụi mịn PM2.5", "—", W.aq === "loading" ? "đang tải" : "chưa có dữ liệu")}
+      ${live ? cell("Khả năng mưa", `${W.prob}%`, `${dec(W.mm)} mm`) : ""}
+      ${live ? cell("Chỉ số UV", `${dec(W.uv, 0)}`, uvLabel(W.uv)) : ""}
+      ${live ? cell("Gió", `${Math.round(W.wind)} km/h`, "") : ""}
+    </div>` : "";
+  const hours = live && W.hours ? `<div class="wx-hours">${W.hours.map(h => `<div><span>${h.h}:00</span>${wIcon(codeIcon(h.code), 18)}<b class="num">${Math.round(h.temp)}°</b><small>mưa ${h.prob}%</small>${h.pm25 != null ? `<small>PM2.5 ${Math.round(h.pm25)}</small>` : ""}</div>`).join("")}</div>` : "";
+  return `<div class="wx wx-${s}">
+    <div class="wx-head"><div class="wx-ic">${wIcon(s, 28)}</div>
+      <div class="wx-b"><div class="wx-t">${live ? `<b class="num">${Math.round(W.temp)}°C</b>` : ""}${I.conds.map(c => `<span class="wx-badge">${WSTATE[c].label}</span>`).join("")}</div>${top}</div></div>
+    ${grid}${hours}
+    <ul class="wx-adv">${I.conds.map(c => `<li>${WSTATE[c].advice}</li>`).join("")}</ul></div>
+    <div class="wx-src">${live || W.aq === "ok" ? `Nguồn: Open-Meteo (thời tiết, chất lượng không khí)${W.at ? " · lấy lúc " + W.at : ""} · ` : ""}Vị trí: ${esc(CONFIG.office.name)}</div>`;
+}
+function eatSheet(mode) {
+  if (mode) R.mode = mode;
+  const head = `<div class="sh-h"><div><h3>Hôm nay ăn gì?</h3><div class="sub">${fdate(todayStr())} · ${CAT.length} quán trong danh mục</div></div>${X}</div>`;
+  const tabs = `<div style="padding:0 16px 10px"><div class="seg" role="tablist">
+    <button role="tab" aria-selected="${R.mode === "suggest"}" data-r="mode-suggest">Gợi ý hôm nay</button>
+    <button role="tab" aria-selected="${R.mode === "spin"}" data-r="mode-spin">Quay ngẫu nhiên</button></div></div>`;
+  let body;
+  const st = wState(), maxM = wInfo().maxM;
+  if (R.mode === "suggest") {
+    const s = dailySuggestion(), c = s?.c;
+    body = weatherPanel() + `<div class="pick" aria-live="polite">${c ? `<div class="lbl">Trưa nay ${fdate(s.day).slice(0, 5)} ăn</div><div class="nm">${esc(c.dish)}</div>
+        <div class="meta">${distTxt(c)} · ${priceTxt(c)}</div>
+        <div class="why">${c.name ? esc(c.name) : "Tên quán: chưa cập nhật"}${c.sample ? " · khoảng cách mẫu" : ""}${c.n ? ` · nhóm đã ăn ${c.n} lần` : ""}</div>
+        <ul class="reasons">${s.why.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`
+        : `<div class="nm" style="font-size:16px">Chưa có quán phù hợp</div><div class="meta">Danh mục chưa có quán nào có khoảng cách.</div>`}</div>
+      <div class="acts">${c ? `${dirBtn(c)}<button class="btn pri" data-r="copy">Sao chép gửi nhóm</button>` : ""}</div>
+      <p class="hint" style="padding:0 16px;text-align:center">Gợi ý cố định trong ngày: mọi thành viên, mỗi lần mở đều thấy cùng một món. Gợi ý chỉ đổi khi dự báo trưa chuyển sang nhóm thời tiết khác.</p>
+      <div class="rlabel">Xem thử theo thời tiết <span style="font-weight:400">(chỉ để kiểm tra quy tắc)</span></div>
+      <div class="chips">${["", "nice", "rain", "storm", "hot", "cold", "dust"].map(k => `<button class="chip" aria-pressed="${W.sim === k}" data-r="sim" data-v="${k}">${k ? WSTATE[k].label : "Dự báo thật"}</button>`).join("")}</div>`;
+  } else {
+    const inPool = c => R.sel.has(key(c)) && (!maxM || !R.fitWeather || c.dist == null || c.dist <= maxM);
+    const pool = CAT.filter(inPool);
+    const c = R.pick && inPool(R.pick) ? R.pick : null;
+    body = `<div class="wx-mini">${wIcon(st, 18)}<span>${esc(wShort())}${maxM ? ` · chỉ nên đi quán ≤ ${maxM} m` : ""}</span></div>
+      <div class="pick" aria-live="polite"><div class="lbl">${pool.length} lựa chọn trong vòng quay</div>
+        <div class="nm" id="slot">${c ? esc(c.dish) : "?"}</div><div class="meta" id="slotMeta">${c ? `${distTxt(c)} · ${priceTxt(c)}` : "Chọn các quán bên dưới rồi nhấn Quay"}</div></div>
+      <div class="acts"><button class="btn pri" data-r="spin" ${pool.length < 2 ? "disabled" : ""}>Quay</button>${c ? `${dirBtn(c)}<button class="btn" data-r="copy">Sao chép gửi nhóm</button>` : ""}</div>
+      ${maxM ? `<label class="toggle"><input type="checkbox" data-r="fit" ${R.fitWeather ? "checked" : ""}>Chỉ quay các quán ≤ ${maxM} m (phù hợp thời tiết)</label>` : ""}
+      <div class="rlabel"><span>Quán đưa vào vòng quay</span><span><button data-r="all">Chọn tất cả</button><button data-r="none">Bỏ chọn</button></span></div>
+      ${CATS.map(g => `<div class="rlabel" style="padding-top:8px"><span><i class="cdot" style="--cc:${catColor(g)}"></i>${esc(g)}</span><button data-r="cat" data-v="${esc(g)}">Chọn cả nhóm</button></div>
+        <div class="chips">${CAT.filter(x => x.cat === g).map(x => { const far = maxM && x.dist > maxM; return `<button class="chip${far ? " far" : ""}" aria-pressed="${R.sel.has(key(x))}" data-r="toggle" data-v="${esc(key(x))}">${esc(x.dish)}<small>${x.dist ?? "?"} m</small></button>`; }).join("")}</div>`).join("")}
+      <p class="hint" style="padding:0 16px">Số nhỏ cạnh tên = khoảng cách đến công ty (đang là số mẫu). Nhà hàng/lẩu không chọn sẵn.</p>`;
+  }
+  const wasOpen = $("#ov").classList.contains("open"), sc = $("#sheet").scrollTop;
+  openSheet(head + tabs + body);
+  if (wasOpen) $("#sheet").scrollTop = sc;
+}
+function refreshEat() {
+  if ($("#ov").classList.contains("open") && $("#sheet .seg [data-r]")) eatSheet();
+  if (S.tab === "overview") { const el = $("#eatCard"); if (el) el.outerHTML = eatCard(); }
+}
+function eatCard() {
+  const s = dailySuggestion(), I = wInfo(), st = I.primary, c = s?.c;
+  const live = !W.sim && W.status === "ok";
+  const wtxt = W.sim ? WSTATE[st].label + " (xem thử)" : W.status === "loading" ? "Đang tải thời tiết" : W.status === "ok" ? `${WSTATE[st].label}${W.aq === "ok" ? `, PM2.5 ${Math.round(W.pm25)}` : ""}` : "Chưa có thời tiết";
+  const pct = c?.dist != null ? Math.max(6, Math.min(100, c.dist / 900 * 100)) : 0;
+  return `<section class="sec tk tk-${st}" id="eatCard" aria-label="Gợi ý trưa nay">
+    <button class="tk-main" data-eat="suggest" aria-label="Xem chi tiết gợi ý trưa nay">
+      <span class="tk-orb" aria-hidden="true">${wIcon(st, 16)}<b class="num">${live ? Math.round(W.temp) + "°" : "–"}</b></span>
+      <span class="tk-body">
+        <span class="tk-lbl">Trưa nay ăn</span>
+        <span class="tk-dish">${c ? esc(c.dish) : "Chưa có gợi ý"}</span>
+        <span class="tk-meta">${c ? `<span class="tk-walk" aria-hidden="true"><i style="width:${pct}%"></i></span><span class="num">${c.dist} m · ${c.walk} phút</span>` : ""}<span class="tk-wx">${esc(wtxt)}</span></span>
+      </span>
+    </button>
+    <button class="tk-stub" data-eat="spin" aria-label="Quay ngẫu nhiên">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/></svg>
+      <small>Quay</small></button>
+  </section>`;
+}
+function spin() {
+  const maxM = wInfo().maxM;
+  const pool = CAT.filter(c => R.sel.has(key(c)) && (!maxM || !R.fitWeather || c.dist == null || c.dist <= maxM));
+  if (R.rolling || pool.length < 2) return;
+  const final = pool[rnd(pool.length)], slot = $("#slot"), meta = $("#slotMeta");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  R.rolling = true; R.pick = null;
+  let k = 0, steps = reduce ? 0 : 18, delay = 45;
+  const tick = () => {
+    if (k < steps) { slot.textContent = pool[rnd(pool.length)].dish; slot.classList.add("rolling"); meta.textContent = "Đang quay…"; k++; delay *= 1.09; setTimeout(tick, delay); return; }
+    R.rolling = false; R.pick = final; eatSheet();
+  };
+  tick();
+}
+function copyPick() {
+  const c = R.mode === "suggest" ? dailySuggestion()?.c : R.pick; if (!c) return;
+  const wx = !W.sim && (W.status === "ok" || W.aq === "ok") ? ` Thời tiết trưa: ${wShort()}.` : "";
+  const du = dirUrl(c), txt = `Trưa nay ăn: ${c.dish}${c.name ? ` (${c.name})` : ""}, ${distTxt(c)}, ${priceTxt(c)}.${wx}${du ? `\nChỉ đường: ${du}` : ""}`;
+  const done = () => { const b = $('#sheet [data-r="copy"]'); if (b) b.textContent = "Đã sao chép"; };
+  try { navigator.clipboard.writeText(txt).then(done, () => prompt("Sao chép nội dung:", txt)); } catch (e) { prompt("Sao chép nội dung:", txt); }
+}
+function onEat(b) {
+  const a = b.dataset.r, v = b.dataset.v;
+  if (a === "mode-suggest") return eatSheet("suggest");
+  if (a === "mode-spin") { R.pick = null; return eatSheet("spin"); }
+  if (a === "sim") { W.sim = v; refreshEat(); return; }
+  if (a === "copy") return copyPick();
+  if (a === "spin") return spin();
+  if (R.rolling) return;
+  if (a === "toggle") R.sel.has(v) ? R.sel.delete(v) : R.sel.add(v);
+  if (a === "all") CAT.forEach(c => R.sel.add(key(c)));
+  if (a === "none") R.sel.clear();
+  if (a === "cat") CAT.filter(c => c.cat === v).forEach(c => R.sel.add(key(c)));
+  eatSheet();
+}
+
+/* ---------- Render & events ---------- */
+function render() {
+  const v = {overview: vOverview, meals: vMeals, members: vMembers, payments: vPayments}[S.tab] || vOverview;
+  $("#view").innerHTML = v();
+  document.querySelectorAll("nav.bn button").forEach(b => b.toggleAttribute("aria-current", b.dataset.tab === S.tab) || b.dataset.tab === S.tab && b.setAttribute("aria-current", "page"));
+  document.querySelectorAll("nav.bn button").forEach(b => b.dataset.tab === S.tab ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
+  const pi = PIDX[S.period], allNow = LIST_TABS.includes(S.tab) && isAll();
+  $("#pChip").innerHTML = (allNow ? "Tất cả kỳ" : plabel(S.period)) + CHEV; $("#pChip").classList.toggle("all", allNow);
+  const c = $("#chart"); if (c) swipe(c, () => { S.chart = Math.min(2, S.chart + 1); render(); }, () => { S.chart = Math.max(0, S.chart - 1); render(); });
+  const pc = $("#pchart"); if (pc) swipe(pc, () => { const O = [5, 4, 1, 2]; S.pchart = O[Math.min(3, O.indexOf(S.pchart) + 1)]; render(); }, () => { const O = [5, 4, 1, 2]; S.pchart = O[Math.max(0, O.indexOf(S.pchart) - 1)]; render(); });
+  writeHash();
+}
+$("#openIssues").addEventListener("click", issuesSheet);
+$("#pChip").addEventListener("click", () => openSheet(periodSheetHTML(PER.map(p => p.id), S.period, todayStr().slice(0, 7))));
+document.querySelectorAll("nav.bn button").forEach(b => b.addEventListener("click", () => go(b.dataset.tab)));
+$("#ov").addEventListener("click", e => { if (e.target.id === "ov" || e.target.closest(".x")) closeSheet(); });
+$("#sheet").addEventListener("click", e => {
+  const pk = e.target.closest("[data-pick]"); if (pk) { S.period = pk.dataset.pick; S.mf.scope = S.tf.scope = "period"; closeSheet(); render(); return; }
+  const fs = e.target.closest("[data-mfset]");
+  if (fs && S._mtmp) { const k = fs.dataset.mfset; S._mtmp[k] = fs.dataset.v; if (k === "payer") $("#mfPayer").value = ""; $("#sheet").querySelectorAll(`[data-mfset="${k}"]`).forEach(x => x.setAttribute("aria-pressed", x.dataset.v === S._mtmp[k])); return; }
+  if (e.target.closest("[data-mf-reset]")) { S.mf = MF0(); S._mtmp = null; closeSheet(); return render(); }
+  if (e.target.closest("[data-mf-apply]")) { const f = S._mtmp; f.rest = $("#mfRest").value; f.from = $("#mfFrom").value; f.to = $("#mfTo").value; if ($("#mfPayer").value) f.payer = $("#mfPayer").value; S.mf = f; S._mtmp = null; closeSheet(); render(); return scrollTo(0, 0); }
+  const b = e.target.closest("[data-meal]"); if (b) return mealSheet(b.dataset.meal); const r = e.target.closest("button[data-r]"); if (r) onEat(r); });
+$("#sheet").addEventListener("change", e => { if (e.target.dataset.r === "fit") { R.fitWeather = e.target.checked; eatSheet(); } });
+$("#openEat").addEventListener("click", () => eatSheet("suggest"));
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+
+$("#view").addEventListener("click", e => {
+  const t = e.target.closest("button"); if (!t) return;
+  const d = t.dataset;
+  if (d.meal) return mealSheet(d.meal);
+  if (d.eat) { if (d.eat === "spin") R.pick = null; return eatSheet(d.eat); }
+  if (d.member) return go("members", {member: d.member});
+  if (d.chart) { S.chart = +d.chart; return render(); }
+  if (d.catScope) { S.catScope = d.catScope; return render(); }
+  if (d.catBy) { S.catBy = d.catBy; return render(); }
+  if (d.act === "fund") { S.fundOpen = !S.fundOpen; return render(); }
+  if (d.pchart) { S.pchart = +d.pchart; return render(); }
+  if (d.scopeToggle !== undefined) { S.mf.scope = S.tf.scope = isAll() ? "period" : "all"; return render(); }
+  if (d.mscope2) { S.memberScope = d.mscope2; return render(); }
+  if (d.act === "payments") return go("payments", {tf: {...S.tf, scope: "period", type: "deposit", member: ""}});
+  if (d.act === "meals") return go("meals", {mf: {...S.mf, scope: "period"}});
+  if (d.act === "meals-all") return go("meals", {mf: {...S.mf, scope: "period"}});
+  if (d.openMfilter !== undefined) return mealFilterSheet();
+  if (d.rmMf) { if (d.rmMf === "*") S.mf = MF0(); else if (d.rmMf === "date") { S.mf.from = ""; S.mf.to = ""; } else S.mf[d.rmMf] = ""; return render(); }
+  if (d.mfMem !== undefined) { S.mf.member = d.mfMem; return render(); }
+  if (d.tfMem !== undefined) { S.tf.member = d.tfMem; return render(); }
+  if (d.ttype) { S.tf.type = d.ttype; S.tf.member = ""; return render(); }
+});
+$("#view").addEventListener("change", e => {
+  const t = e.target;
+  if (t.id === "mSel") { S.member = t.value; return render(); }
+  if (t.dataset.mf) { S.mf[t.dataset.mf] = t.value; return render(); }
+  if (t.dataset.tf) { S.tf[t.dataset.tf] = t.value; return render(); }
+});
+let qT; $("#view").addEventListener("input", e => {
+  if (e.target.id !== "fq") return;
+  clearTimeout(qT); const v = e.target.value;
+  qT = setTimeout(() => { S.mf.q = v; render(); const i = $("#fq"); i.focus(); i.setSelectionRange(v.length, v.length); }, 250);
+});
+
+readHash(); render(); loadWeather();
+})();
+</script>
+</body>
+</html>
