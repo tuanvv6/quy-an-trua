@@ -901,7 +901,7 @@ a.btn.dir{color:var(--ink);background:var(--surface);border:1px solid var(--line
 
 <div class="ov" id="ov" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" id="sheet"></div></div>
 
-<script src="config.js"></script>
+<script>document.write('<script src="config.js?v=' + Date.now() + '"><\/script>');</script>
 <script>
 /* ================== KẾT NỐI GOOGLE SHEETS ================== */
 /* Đường link máy chủ lấy từ file config.js (cùng thư mục). Không cần sửa ở đây. */
@@ -1515,6 +1515,8 @@ const AQI_LV = [[50, "Tốt"], [100, "Trung bình"], [150, "Kém"], [200, "Xấu
 const aqiLabel = v => v == null ? "—" : AQI_LV.find(([m]) => v <= m)[1];
 const uvLabel = v => v == null ? "" : v < 3 ? "Thấp" : v < 6 ? "Trung bình" : v < 8 ? "Cao" : v < 11 ? "Rất cao" : "Cực cao";
 const codeTxt = c => c >= 95 ? "Giông" : c >= 80 ? "Mưa rào" : c >= 61 ? "Mưa" : c >= 51 ? "Mưa phùn nhẹ" : c >= 45 ? "Sương mù" : c >= 3 ? "Nhiều mây" : c >= 2 ? "Có mây" : c >= 1 ? "Nắng, ít mây" : "Trời nắng";
+/* Mô hình hay gán mã "mưa phùn" (51–57) dù lượng mưa ≈ 0: khi đó mô tả theo độ che phủ mây */
+const effCode = (code, mm, cloud) => (code >= 51 && code <= 57 && (mm ?? 0) < 0.1) ? (cloud == null ? 2 : cloud < 30 ? 0 : cloud < 70 ? 2 : 3) : code;
 const nowHour = () => +new Intl.DateTimeFormat("en-GB", {timeZone: CONFIG.tz, hour: "2-digit", hour12: false}).format(new Date()) % 24;
 /* Từ 10:00 đến 12:59: dùng thời tiết hiện tại (cập nhật 15 phút/lần) thay cho dự báo cả buổi trưa */
 const liveNow = () => !!W.cur && nowHour() >= 10 && nowHour() <= 12;
@@ -1522,18 +1524,18 @@ async function getJSON(url) { const ctl = new AbortController(), to = setTimeout
 const lunchIdx = H => H.time.map((t, i) => [t.slice(0, 10), +t.slice(11, 13), i]).filter(([d, h]) => d === todayStr() && CONFIG.lunchHours.includes(h)).map(([, , i]) => i);
 async function loadWeather() {
   const o = CONFIG.office, tz = encodeURIComponent(CONFIG.tz);
-  const wUrl = `https://api.open-meteo.com/v1/forecast?latitude=${o.lat}&longitude=${o.lon}&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation_probability,precipitation,weather_code,uv_index,wind_speed_10m&current=temperature_2m,apparent_temperature,precipitation,weather_code&timezone=${tz}&forecast_days=1`;
+  const wUrl = `https://api.open-meteo.com/v1/forecast?latitude=${o.lat}&longitude=${o.lon}&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation_probability,precipitation,weather_code,uv_index,wind_speed_10m,cloud_cover&current=temperature_2m,apparent_temperature,precipitation,weather_code,cloud_cover&timezone=${tz}&forecast_days=1`;
   const aUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${o.lat}&longitude=${o.lon}&hourly=pm2_5,pm10,us_aqi&timezone=${tz}&forecast_days=1`;
   const [wr, ar] = await Promise.allSettled([getJSON(wUrl), getJSON(aUrl)]);
   try {
     const H = wr.value.hourly, idx = lunchIdx(H); if (!idx.length) throw 0;
-    const col = k => idx.map(i => H[k][i] ?? 0), mx = k => Math.max(...col(k));
+    const col = k => idx.map(i => H[k][i] ?? 0), mx = k => Math.max(...col(k)), ec = i => effCode(H.weather_code[i], H.precipitation[i], H.cloud_cover?.[i]);
     Object.assign(W, {status: "ok", temp: mx("temperature_2m"), feels: mx("apparent_temperature"), hum: Math.round(col("relative_humidity_2m").reduce((a, b) => a + b, 0) / idx.length),
-      prob: mx("precipitation_probability"), mm: col("precipitation").reduce((a, b) => a + b, 0), code: mx("weather_code"), uv: mx("uv_index"), wind: mx("wind_speed_10m"),
-      hours: idx.map(i => ({h: +H.time[i].slice(11, 13), temp: H.temperature_2m[i], prob: H.precipitation_probability[i], code: H.weather_code[i], mm: H.precipitation[i] ?? 0, hum: H.relative_humidity_2m[i]})),
+      prob: mx("precipitation_probability"), mm: col("precipitation").reduce((a, b) => a + b, 0), code: Math.max(...idx.map(ec)), uv: mx("uv_index"), wind: mx("wind_speed_10m"),
+      hours: idx.map(i => ({h: +H.time[i].slice(11, 13), temp: H.temperature_2m[i], prob: H.precipitation_probability[i], code: ec(i), mm: H.precipitation[i] ?? 0, hum: H.relative_humidity_2m[i]})),
       at: new Date().toLocaleTimeString("vi-VN", {hour: "2-digit", minute: "2-digit", timeZone: CONFIG.tz})});
     const C = wr.value.current;
-    if (C && C.weather_code != null) W.cur = {code: C.weather_code, mm: C.precipitation ?? 0, temp: C.temperature_2m, feels: C.apparent_temperature, t: C.time};
+    if (C && C.weather_code != null) W.cur = {code: effCode(C.weather_code, C.precipitation, C.cloud_cover), rawCode: C.weather_code, mm: C.precipitation ?? 0, temp: C.temperature_2m, feels: C.apparent_temperature, t: C.time};
   } catch (e) { W.status = "error"; }
   try {
     const A = ar.value.hourly, idx = lunchIdx(A); if (!idx.length) throw 0;
@@ -1558,7 +1560,7 @@ function wInfo() {
         if (hs.some(h => h.code >= 95) || (W.prob >= r.stormProb && W.mm >= r.stormMm)) k.storm = 1;
         else if (wet.length || W.mm >= r.rainMm) k.rain = 1;
       }
-      if (W.feels >= r.hotFeels) k.hot = 1;
+      if (Math.max(W.feels, liveNow() ? W.cur.feels ?? 0 : 0) >= r.hotFeels) k.hot = 1;
       if (W.temp <= r.coldTemp) k.cold = 1;
       if (W.hum >= r.humid) k.humid = 1;
     }
@@ -1625,7 +1627,7 @@ function weatherPanel() {
   else if (W.status === "loading") top = `<div class="wx-d">Đang tải dự báo…</div>`;
   else if (W.status !== "ok") top = `<div class="wx-d">Không kết nối được dịch vụ thời tiết. Kiểm tra mạng rồi mở lại.</div>`;
   else if (liveNow()) top = `<div class="wx-d">Hiện tại: ${codeTxt(W.cur.code)} · ${Math.round(W.cur.temp)}°C. Dự báo giờ ăn ${CONFIG.lunchLabel} ở bên dưới.</div>`;
-  else top = `<div class="wx-d">${codeTxt((W.hours || []).find(h => h.h === 12)?.code ?? W.code)} · dự báo giờ ăn ${CONFIG.lunchLabel}</div>`;
+  else top = `<div class="wx-d">${(c => (c >= 51 && c <= 57 ? "Có thể " + codeTxt(c).toLowerCase() : codeTxt(c)))((W.hours || []).find(h => h.h === 12)?.code ?? W.code)} · dự báo giờ ăn ${CONFIG.lunchLabel}</div>`;
   const cell = (k, v, sub) => `<div><span class="k">${k}</span><b class="num">${v}</b>${sub ? `<small>${sub}</small>` : ""}</div>`;
   const grid = (live || (!W.sim && W.aq === "ok")) ? `<div class="wx-grid">
       ${live ? (liveNow() ? cell("Nhiệt độ hiện tại", `${Math.round(W.cur.temp)}°C`, `cảm giác ${Math.round(W.cur.feels)}°C`) : cell("Nhiệt độ", `${Math.round(W.temp)}°C`, `cảm giác ${Math.round(W.feels)}°C`)) : ""}
