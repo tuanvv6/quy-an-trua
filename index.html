@@ -827,6 +827,37 @@ a.btn.dir{color:var(--ink);background:var(--surface);border:1px solid var(--line
 .scopelnk{border:0;background:none;padding:0;color:var(--vt);font-weight:600;font-size:12.5px}
 .rsum .sc{display:flex;gap:8px;align-items:center}
 
+/* ---- Chuyển tiền nộp quỹ ---- */
+.paycard{display:flex;align-items:center;gap:12px;width:100%;margin:10px 0 4px;padding:12px 14px;border-radius:16px;border:1px solid var(--vt-soft,#FFD3DC);background:var(--vt-bg,#FFF0F3);color:var(--ink);text-align:left;font:inherit;cursor:pointer}
+.paycard .pc-ic{width:40px;height:40px;border-radius:12px;background:var(--vt,#EE0033);color:#fff;display:grid;place-items:center;flex:none}
+.paycard .pc-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.paycard .pc-t b{font-size:15px;font-weight:600}
+.paycard .pc-t small{font-size:12.5px;color:var(--ink-2)}
+.paycard .pc-go{font-size:13.5px;font-weight:600;color:var(--vt,#EE0033);white-space:nowrap}
+.paysh{padding:0 16px 8px}
+.paysh .seg{margin-bottom:14px}
+.qrbox{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 16px 14px;text-align:center;max-width:300px;margin:0 auto}
+.qrbox img{width:100%;max-width:240px;aspect-ratio:1;display:block;margin:0 auto;image-rendering:pixelated}
+.qrbox .qr-n{font-weight:700;font-size:16px;color:#1E2125;margin-top:8px;letter-spacing:.01em}
+.qrbox .qr-s{font-size:12px;color:#6B7079;margin-top:2px}
+.qr-act{display:flex;justify-content:center;gap:8px;margin:12px 0 4px}
+.qr-act .btn{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink)}
+.payrows{border:1px solid var(--line);border-radius:14px;background:var(--surface);margin-top:12px}
+.payrow{display:flex;align-items:center;gap:10px;padding:11px 14px;border-top:1px solid var(--line-2)}
+.payrow:first-child{border-top:0}
+.payrow .k{font-size:12px;color:var(--muted)}
+.payrow .v{font-size:16px;font-weight:600;color:var(--ink);letter-spacing:.01em}
+.payrow > div{flex:1;min-width:0}
+.cpy{border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:999px;height:32px;padding:0 12px;font:inherit;font-size:12.5px;font-weight:600;flex:none}
+.cpy.ok{background:#E8F5EC;border-color:#BFE3CB;color:#1F7A3D}
+.paysteps{margin:12px 0 0;padding-left:20px;font-size:13.5px;color:var(--ink-2);line-height:1.6}
+.paywho{margin-top:16px}
+.paywho .lbl{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.paywho .pw-chips{display:flex;flex-wrap:wrap;gap:6px}
+.paywho .pw-chips button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 11px;font:inherit;font-size:13px;color:var(--ink-2)}
+.paywho .pw-chips button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.paynote{font-size:12.5px;color:var(--muted);margin:14px 2px 4px;line-height:1.5}
+
 .boot{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:24px;color:var(--muted)}
 .boot b{color:var(--ink);font-size:17px}.boot span{max-width:340px;font-size:14px;line-height:1.5}
 .boot code{background:var(--line-2,#eee);padding:1px 5px;border-radius:5px;font-size:12.5px}
@@ -1348,12 +1379,62 @@ function vPayments() {
   let body = "", cur = null;
   list.forEach(t => { if (t.period !== cur) { cur = t.period; const g = list.filter(x => x.period === cur); body += `<div class="group-h"><span>${plabel(cur)}</span><span class="num">${g.length} khoản · ${vndU(g.reduce((s, x) => s + x.amount, 0))}</span></div>`; } body += txRow(t); });
   return `<h1>Đóng tiền</h1>
+  ${payCard()}
   <div class="seg ctl-seg tseg" role="tablist" style="margin-top:8px"><button role="tab" aria-selected="${type === "deposit"}" data-ttype="deposit">Nộp quỹ <b class="num">${nDep}</b></button><button role="tab" aria-selected="${type === "advance"}" data-ttype="advance">Trả hộ bữa ăn <b class="num">${nAdv}</b></button></div>
   <p class="hint" style="margin:8px 2px 0">${type === "deposit" ? "Tiền thành viên nộp vào quỹ chung." : "Thành viên trực tiếp trả hóa đơn bữa ăn cho cả nhóm. Số tiền được tính có cho người trả, không tính là nộp quỹ."}</p>
   <div class="mfilter"><span>${type === "deposit" ? "Người nộp:" : "Người trả:"}</span><button class="fchip" aria-pressed="${!f.member}" data-tf-mem="">Tất cả</button>
     ${DATA.members.filter(m => counts[m.id]).map(m => `<button class="fchip" aria-pressed="${f.member === m.id}" data-tf-mem="${m.id}">${esc(sn(m.id))} <b class="num">${counts[m.id]}</b></button>`).join("")}</div>
   <div class="rsum"><span><b class="num">${list.length}</b> khoản · <b class="num">${vndU(list.reduce((s, x) => s + x.amount, 0))}</b></span><span class="sc">${f.scope === "all" ? "Tất cả kỳ" : P}${scopeLink(f.scope === "all", P)}</span></div>
   <section class="sec dom-money" style="margin-top:6px">${body || `<div class="empty"><b>Không có khoản nào</b>Không có khoản phù hợp trong phạm vi đang chọn.</div>`}</section>`;
+}
+
+/* ---------- Chuyển tiền nộp quỹ ---------- */
+const PAY = {
+  name: "VŨ VĂN TUÂN",
+  phone: "0979321343",
+  account: "9704229209361794",
+  bank: "MB Bank (tài khoản ViettelPay)",
+  qr: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZoAAAGaCAAAAAATbdq/AAAFd0lEQVR42u3dW44jIQxAURj1/rfMbCBCtmwg03PuZ6dDVerKluziMdfAd/LHI6AG1FADaqgBNaCGGlBDDagBNdSAGmpADaihBh38fPrjbBl6fRivMhNhpq+2/7/9NaJ33/2sRI2EBmqoATWghhpQQw3edAOitXO0Zl/BT/dV+X6Umb772fJ7u5+VqJHQQA01oAbUUANqqMHrbkC0co1WwtG365Xx9ne/7y7cncUgaiQ0UEMNqAE11IAaavDd3YAK+3q/UtF3v98fF8YTNRIaqKEG1IAaakANNfgfugHR2n5sq/zKp9HVCFPUgBpqQA01oAbUUANqdAO29XSeSt3dXdGf6wEsUSOhgRpQQw2ooQbUgJp/uBtw9115tLaP7vwf/e5Ij7cuPCtRI6GBGmpADTWgBtRQg5vdgHMr5XtmBIzmOj5/WsGNZyVqJDRQQw2ooQbUgBpqcLMbEN1Z/8Y8/cob9+i7/JWu98+tcxA1EhqooQbUgBpqQA01OM7Mn/l3bpe+/Hv26HjRXxSdTdBzV6JGQgM11IAaUEMNqKEGTwivFOhZl7+vxfM1e/69/Sr8X36XglF4QqJGQgM11IAaakANqKEGN7sB+Xnw+TfpPScMRlcyjGDlP9LjVVYjWCkgoYEaakANqKEG1FCD7+kGVFbKR9cR7GviVajZK+sSKneff1aiRkIDNdSAGlBDDaihBt/TDYjWtT2r7Huq8ug9d88XyDNFjYQGaqgBNaCGGlBDDb6wG9BzpkDPKvtoFZ2fTVBZqxDtJMz0MxU1EhqooQbUgBpqQA01eNMNqNTs+R5A5QSDfLXdM4u/p6thF0EJDdRQA2pADTWghho8oemEwe4qOr8GIX/u4Qh+I1/RVz4VNRIaqKEG1IAaakANNXjTDeipnXvq+OjKg3xfIPyICr2CUegLiBoJDdRQA2qoATWghhocomnfgO5eQc+Jhedm8VeuZm6AhAZqqAE1oIYaUEMNvrEb0LNvwL7+rezcF50lkJ9NUJlD0L0XoaiR0EANNaCGGlADaqjBzW5AtC9wo7LOz/u/8X6/skIh2qMQNRIaqKEG1FADakANNTjEXD3DpOvkfOV/Y/fCaOU/0t0AJwxKaKCGGlADaqgBNdTga/jJV7ifat1K1Ru9g/zZhflPKycsdJ8uIGokNFBDDaihBtSAGmpwsxtw9wzBc+NVTiuIjtx9zoCokdBADTWgBtRQA2qowXFmZW19Zb39+3ML8l2DUfjlI/07RI2EBmqoATXUgBpQQw0OUZob0HMOYHcdv6+xKysZoh2RynwBUSOhgRpqQA2ooQbUUIPjzJ46Pj/DPlp393QSemYY3P2uqJHQQA01oIYaUANqqMHrbkC+8q98o1JP3zgLcR4bWdRIaKCGGlADaqgBNdTgTTfg3Fr47pq9sk9g99r/7mclaiQ0UEMNqKEG1IAaanCzG9B+kXQl3LMuP981qFTv0auJGgkN1FADakANNaCGGjym/YTBff27r8Dz1412CHr2IRgtoyxRI6GBGmpADaihBtRQgy/sBox05bqvnaN9gejb+nwnoXIawEr/tv2n0b6AqJHQQA01oIYaUANqqMGbbkC+2q58t+fEgehdVer9yhmM0S6EqJHQQA01oIYaUANqqMHrbkCF6PqAyg4Cnz7d/1/0GtHuQs9JAqJGQgM11IAaUEMNqKEGv6MbcI5KX6B7bUH3boiiRkIDNdSAGmpADaihBq+7AevRDeZX8o9gXyDfXYh+o+dJihoJDdRQA2qoATWghhq86Qb0nC7QvRo/v29AZTfE6D6BPSseRI2EBmqoATWghhpQQw2OM5dnIGpADTWghhpQA2qoATXUgBpQQw2ooQbUgBpqQM1v5i9X0zpdNXG+EgAAAABJRU5ErkJggg=="
+};
+const QR_IC = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"/></svg>`;
+const fmtPhone = p => p.replace(/^(\d{4})(\d{3})(\d{3})$/, "$1 $2 $3");
+const fmtAcc = a => a.replace(/(\d{4})(?=\d)/g, "$1 ");
+const asciiUp = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").toUpperCase().replace(/[^A-Z0-9 ]/g, "");
+const payCard = () => `<button class="paycard" data-open-pay><span class="pc-ic">${QR_IC}</span><span class="pc-t"><b>Chuyển tiền nộp quỹ</b><small>Quét VietQR hoặc chuyển ViettelPay qua số điện thoại</small></span><span class="pc-go">Mở ›</span></button>`;
+function payContent() {
+  const p = todayStr().slice(0, 7), base = `QUY AN TRUA T${+p.slice(5)}`;
+  return S.payWho ? `${base} ${asciiUp(sn(S.payWho))}` : base;
+}
+function paySheet() {
+  const tab = S.payTab || "qr", cur = todayStr().slice(0, 7);
+  const who = (PER[PIDX[cur]]?.members || PER.at(-1).members).filter(id => !MEM[id]?.manager);
+  const cp = (txt, label) => `<button class="cpy" data-copy="${esc(txt)}">${label || "Sao chép"}</button>`;
+  openSheet(`<div class="sh-h"><div><h3>Nộp quỹ ăn trưa</h3><div class="sub">Người nhận: ${esc(PAY.name)} · quản lý quỹ</div></div>${X}</div>
+  <div class="paysh">
+    <div class="seg" role="tablist"><button role="tab" aria-selected="${tab === "qr"}" data-paytab="qr">Quét mã QR</button><button role="tab" aria-selected="${tab === "phone"}" data-paytab="phone">ViettelPay · Số điện thoại</button></div>
+    ${tab === "qr" ? `
+    <div class="qrbox"><img src="${PAY.qr}" alt="Mã VietQR chuyển tiền cho ${esc(PAY.name)}"><div class="qr-n">${esc(PAY.name)}</div><div class="qr-s">VietQR · quét bằng mọi ứng dụng ngân hàng</div></div>
+    <div class="qr-act"><a class="btn" href="${PAY.qr}" download="qr-quy-an-trua.png">Lưu ảnh QR</a></div>
+    <p class="hint" style="text-align:center;margin:4px 0 0">Đang xem trên điện thoại: lưu ảnh, mở app ngân hàng → Quét QR → chọn ảnh từ thư viện.</p>
+    <div class="payrows">
+      <div class="payrow"><div><div class="k">Số tài khoản</div><div class="v num">${fmtAcc(PAY.account)}</div></div>${cp(PAY.account)}</div>
+      <div class="payrow"><div><div class="k">Ngân hàng</div><div class="v" style="font-size:14.5px">${esc(PAY.bank)}</div></div></div>
+    </div>` : `
+    <div class="payrows">
+      <div class="payrow"><div><div class="k">Số điện thoại ViettelPay</div><div class="v num">${fmtPhone(PAY.phone)}</div></div>${cp(PAY.phone)}</div>
+      <div class="payrow"><div><div class="k">Chủ tài khoản</div><div class="v">${esc(PAY.name)}</div></div></div>
+    </div>
+    <ol class="paysteps"><li>Mở ứng dụng <b>Viettel Money</b> → <b>Chuyển tiền</b>.</li><li>Nhập số điện thoại <b class="num">${fmtPhone(PAY.phone)}</b>.</li><li>Kiểm tra tên người nhận là <b>${esc(PAY.name)}</b>, nhập số tiền và nội dung bên dưới.</li></ol>`}
+    <div class="paywho"><div class="lbl">Nội dung chuyển khoản</div>
+      <div class="pw-chips" role="group" aria-label="Chọn tên của bạn">${who.map(id => `<button aria-pressed="${S.payWho === id}" data-paywho="${id}">${esc(sn(id))}</button>`).join("")}</div>
+      <div class="payrows"><div class="payrow"><div><div class="k">${S.payWho ? "Ghi đúng nội dung này" : "Chọn tên của bạn ở trên để thêm vào nội dung"}</div><div class="v" style="font-size:15px">${esc(payContent())}</div></div>${cp(payContent())}</div></div>
+    </div>
+    <p class="paynote">Khoản nộp sẽ hiện trong mục Nộp quỹ sau khi quản lý quỹ ghi nhận.</p>
+  </div>`);
+}
+function copyTxt(txt, btn) {
+  const ok = () => { if (btn) { const t = btn.textContent; btn.textContent = "Đã chép"; btn.classList.add("ok"); setTimeout(() => { btn.textContent = t; btn.classList.remove("ok"); }, 1600); } };
+  try { navigator.clipboard.writeText(txt).then(ok, () => prompt("Sao chép:", txt)); } catch (e) { prompt("Sao chép:", txt); }
 }
 
 /* ---------- Sheets ---------- */
@@ -1660,6 +1741,9 @@ $("#pChip").addEventListener("click", () => openSheet(periodSheetHTML(PER.map(p 
 document.querySelectorAll("nav.bn button").forEach(b => b.addEventListener("click", () => go(b.dataset.tab)));
 $("#ov").addEventListener("click", e => { if (e.target.id === "ov" || e.target.closest(".x")) closeSheet(); });
 $("#sheet").addEventListener("click", e => {
+  const pt = e.target.closest("[data-paytab]"); if (pt) { S.payTab = pt.dataset.paytab; return paySheet(); }
+  const pw = e.target.closest("[data-paywho]"); if (pw) { S.payWho = S.payWho === pw.dataset.paywho ? null : pw.dataset.paywho; return paySheet(); }
+  const cy = e.target.closest("[data-copy]"); if (cy) return copyTxt(cy.dataset.copy, cy);
   const pk = e.target.closest("[data-pick]"); if (pk) { S.period = pk.dataset.pick; S.mf.scope = S.tf.scope = "period"; closeSheet(); render(); return; }
   const fs = e.target.closest("[data-mfset]");
   if (fs && S._mtmp) { const k = fs.dataset.mfset; S._mtmp[k] = fs.dataset.v; if (k === "payer") $("#mfPayer").value = ""; $("#sheet").querySelectorAll(`[data-mfset="${k}"]`).forEach(x => x.setAttribute("aria-pressed", x.dataset.v === S._mtmp[k])); return; }
@@ -1671,6 +1755,7 @@ $("#openEat").addEventListener("click", () => eatSheet("suggest"));
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
 
 $("#view").addEventListener("click", e => {
+  if (e.target.closest("[data-open-pay]")) return paySheet();
   const t = e.target.closest("button"); if (!t) return;
   const d = t.dataset;
   if (d.meal) return mealSheet(d.meal);
