@@ -1463,11 +1463,13 @@ function issuesSheet() {
 /* ---------- Hôm nay ăn gì ---------- */
 /* Cấu hình */
 const CONFIG = {
-  office: {name: "Số 1 Giang Văn Minh, Ba Đình", lat: 21.03166, lon: 105.82729},
+  /* Điểm xuất phát chỉ đường: sửa được trong config.js (OFFICE) mà không cần sửa file này */
+  office: {name: "Số 1 Giang Văn Minh, Ba Đình", lat: 21.03166, lon: 105.82729, ...((window.QUY_CONFIG || {}).OFFICE || {})},
   tz: "Asia/Ho_Chi_Minh",
-  lunchHours: [11, 12, 13],
+  lunchHours: [12, 13],          // số liệu giờ 12:00 và 13:00 phủ khung 11:00–13:00 (mưa tính theo giờ trước đó)
+  lunchLabel: "11:30–13:00",
   walkMPerMin: 75,
-  rules: {rainProb: 50, rainMm: 0.5, stormProb: 70, stormMm: 2, hotFeels: 35, coldTemp: 16, humid: 85, aqiBad: 151, aqiVeryBad: 201,
+  rules: {rainProb: 60, rainMm: 1, rainHourMm: 0.3, rainNowMm: 0.2, stormProb: 70, stormMm: 2, hotFeels: 35, coldTemp: 16, humid: 85, aqiBad: 151, aqiVeryBad: 201,
           maxM: {storm: 150, rain: 250, dust2: 150, dust: 250, hot: 300}},
 };
 const RESTAURANTS = DATA.restaurants;
@@ -1512,12 +1514,15 @@ const W = {status: "loading", aq: "loading", sim: ""};
 const AQI_LV = [[50, "Tốt"], [100, "Trung bình"], [150, "Kém"], [200, "Xấu"], [300, "Rất xấu"], [1e9, "Nguy hại"]];
 const aqiLabel = v => v == null ? "—" : AQI_LV.find(([m]) => v <= m)[1];
 const uvLabel = v => v == null ? "" : v < 3 ? "Thấp" : v < 6 ? "Trung bình" : v < 8 ? "Cao" : v < 11 ? "Rất cao" : "Cực cao";
-const codeTxt = c => c >= 95 ? "Giông" : c >= 80 ? "Mưa rào" : c >= 61 ? "Mưa" : c >= 51 ? "Mưa phùn" : c >= 45 ? "Sương mù" : c >= 3 ? "Nhiều mây" : c >= 1 ? "Ít mây" : "Trời quang";
+const codeTxt = c => c >= 95 ? "Giông" : c >= 80 ? "Mưa rào" : c >= 61 ? "Mưa" : c >= 51 ? "Mưa phùn nhẹ" : c >= 45 ? "Sương mù" : c >= 3 ? "Nhiều mây" : c >= 2 ? "Có mây" : c >= 1 ? "Nắng, ít mây" : "Trời nắng";
+const nowHour = () => +new Intl.DateTimeFormat("en-GB", {timeZone: CONFIG.tz, hour: "2-digit", hour12: false}).format(new Date()) % 24;
+/* Từ 10:00 đến 12:59: dùng thời tiết hiện tại (cập nhật 15 phút/lần) thay cho dự báo cả buổi trưa */
+const liveNow = () => !!W.cur && nowHour() >= 10 && nowHour() <= 12;
 async function getJSON(url) { const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 8000); try { return await (await fetch(url, {signal: ctl.signal})).json(); } finally { clearTimeout(to); } }
 const lunchIdx = H => H.time.map((t, i) => [t.slice(0, 10), +t.slice(11, 13), i]).filter(([d, h]) => d === todayStr() && CONFIG.lunchHours.includes(h)).map(([, , i]) => i);
 async function loadWeather() {
   const o = CONFIG.office, tz = encodeURIComponent(CONFIG.tz);
-  const wUrl = `https://api.open-meteo.com/v1/forecast?latitude=${o.lat}&longitude=${o.lon}&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation_probability,precipitation,weather_code,uv_index,wind_speed_10m&timezone=${tz}&forecast_days=1`;
+  const wUrl = `https://api.open-meteo.com/v1/forecast?latitude=${o.lat}&longitude=${o.lon}&hourly=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation_probability,precipitation,weather_code,uv_index,wind_speed_10m&current=temperature_2m,apparent_temperature,precipitation,weather_code&timezone=${tz}&forecast_days=1`;
   const aUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${o.lat}&longitude=${o.lon}&hourly=pm2_5,pm10,us_aqi&timezone=${tz}&forecast_days=1`;
   const [wr, ar] = await Promise.allSettled([getJSON(wUrl), getJSON(aUrl)]);
   try {
@@ -1525,8 +1530,10 @@ async function loadWeather() {
     const col = k => idx.map(i => H[k][i] ?? 0), mx = k => Math.max(...col(k));
     Object.assign(W, {status: "ok", temp: mx("temperature_2m"), feels: mx("apparent_temperature"), hum: Math.round(col("relative_humidity_2m").reduce((a, b) => a + b, 0) / idx.length),
       prob: mx("precipitation_probability"), mm: col("precipitation").reduce((a, b) => a + b, 0), code: mx("weather_code"), uv: mx("uv_index"), wind: mx("wind_speed_10m"),
-      hours: idx.map(i => ({h: +H.time[i].slice(11, 13), temp: H.temperature_2m[i], prob: H.precipitation_probability[i], code: H.weather_code[i], hum: H.relative_humidity_2m[i]})),
+      hours: idx.map(i => ({h: +H.time[i].slice(11, 13), temp: H.temperature_2m[i], prob: H.precipitation_probability[i], code: H.weather_code[i], mm: H.precipitation[i] ?? 0, hum: H.relative_humidity_2m[i]})),
       at: new Date().toLocaleTimeString("vi-VN", {hour: "2-digit", minute: "2-digit", timeZone: CONFIG.tz})});
+    const C = wr.value.current;
+    if (C && C.weather_code != null) W.cur = {code: C.weather_code, mm: C.precipitation ?? 0, temp: C.temperature_2m, feels: C.apparent_temperature, t: C.time};
   } catch (e) { W.status = "error"; }
   try {
     const A = ar.value.hourly, idx = lunchIdx(A); if (!idx.length) throw 0;
@@ -1542,8 +1549,15 @@ function wInfo() {
   if (W.sim) k = {...SIM[W.sim]};
   else {
     if (W.status === "ok") {
-      if (W.code >= 95 || (W.prob >= r.stormProb && W.mm >= r.stormMm)) k.storm = 1;
-      else if (W.prob >= r.rainProb || W.mm >= r.rainMm || (W.code >= 51 && W.code <= 82)) k.rain = 1;
+      if (liveNow()) {
+        const c = W.cur;
+        if (c.code >= 95) k.storm = 1;
+        else if ((c.code >= 61 && c.code <= 82) || c.mm >= r.rainNowMm) k.rain = 1;
+      } else {
+        const hs = W.hours || [], wet = hs.filter(h => (h.code >= 61 && h.code <= 82) || (h.prob >= r.rainProb && h.mm >= r.rainHourMm));
+        if (hs.some(h => h.code >= 95) || (W.prob >= r.stormProb && W.mm >= r.stormMm)) k.storm = 1;
+        else if (wet.length || W.mm >= r.rainMm) k.rain = 1;
+      }
       if (W.feels >= r.hotFeels) k.hot = 1;
       if (W.temp <= r.coldTemp) k.cold = 1;
       if (W.hum >= r.humid) k.humid = 1;
@@ -1569,13 +1583,13 @@ const WICON = {
   unknown: '<path d="M7 16.5a4.5 4.5 0 1 1 1.2-8.8A5.5 5.5 0 0 1 18.5 10a3.3 3.3 0 0 1-.5 6.5z"/>',
 };
 WICON.dust2 = WICON.dust;
-const codeIcon = c => c >= 95 ? "storm" : c >= 51 ? "rain" : c >= 3 ? "unknown" : "nice";
+const codeIcon = c => c >= 95 ? "storm" : c >= 61 ? "rain" : c >= 3 ? "unknown" : "nice";
 const wIcon = (s, z = 22) => `<svg width="${z}" height="${z}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${WICON[s] || WICON.unknown}</svg>`;
 const wShort = () => {
   if (W.sim) return `${WSTATE[wState()].label} (xem thử)`;
   if (W.status === "loading") return "Đang tải thời tiết…";
   const p = [];
-  if (W.status === "ok") p.push(`${Math.round(W.temp)}°C`, `ẩm ${W.hum}%`, `mưa ${W.prob}%`);
+  if (W.status === "ok") liveNow() ? p.push(`${codeTxt(W.cur.code)} ${Math.round(W.cur.temp)}°C`, `ẩm ${W.hum}%`) : p.push(`${Math.round(W.temp)}°C`, `ẩm ${W.hum}%`, `mưa ${W.prob}%`);
   if (W.aq === "ok") p.push(`PM2.5 ${Math.round(W.pm25)}`);
   return p.length ? p.join(" · ") : "Chưa lấy được thời tiết";
 };
@@ -1610,10 +1624,11 @@ function weatherPanel() {
   if (W.sim) top = `<div class="wx-d">Đang xem thử kịch bản “${WSTATE[s].label}”, không phải dự báo thật.</div>`;
   else if (W.status === "loading") top = `<div class="wx-d">Đang tải dự báo…</div>`;
   else if (W.status !== "ok") top = `<div class="wx-d">Không kết nối được dịch vụ thời tiết. Kiểm tra mạng rồi mở lại.</div>`;
-  else top = `<div class="wx-d">${codeTxt(W.code)} · trưa nay ${CONFIG.lunchHours[0]}:00–${CONFIG.lunchHours.at(-1) + 1}:00</div>`;
+  else if (liveNow()) top = `<div class="wx-d">Hiện tại: ${codeTxt(W.cur.code)} · ${Math.round(W.cur.temp)}°C. Dự báo giờ ăn ${CONFIG.lunchLabel} ở bên dưới.</div>`;
+  else top = `<div class="wx-d">${codeTxt((W.hours || []).find(h => h.h === 12)?.code ?? W.code)} · dự báo giờ ăn ${CONFIG.lunchLabel}</div>`;
   const cell = (k, v, sub) => `<div><span class="k">${k}</span><b class="num">${v}</b>${sub ? `<small>${sub}</small>` : ""}</div>`;
   const grid = (live || (!W.sim && W.aq === "ok")) ? `<div class="wx-grid">
-      ${live ? cell("Nhiệt độ", `${Math.round(W.temp)}°C`, `cảm giác ${Math.round(W.feels)}°C`) : ""}
+      ${live ? (liveNow() ? cell("Nhiệt độ hiện tại", `${Math.round(W.cur.temp)}°C`, `cảm giác ${Math.round(W.cur.feels)}°C`) : cell("Nhiệt độ", `${Math.round(W.temp)}°C`, `cảm giác ${Math.round(W.feels)}°C`)) : ""}
       ${live ? cell("Độ ẩm", `${W.hum}%`, W.hum >= CONFIG.rules.humid ? "cao" : W.hum <= 45 ? "khô" : "bình thường") : ""}
       ${!W.sim && W.aq === "ok" ? cell("Bụi mịn PM2.5", `${Math.round(W.pm25)}`, `µg/m³ · AQI ${Math.round(W.aqi)} ${aqiLabel(W.aqi)}`) : cell("Bụi mịn PM2.5", "—", W.aq === "loading" ? "đang tải" : "chưa có dữ liệu")}
       ${live ? cell("Khả năng mưa", `${W.prob}%`, `${dec(W.mm)} mm`) : ""}
@@ -1623,10 +1638,10 @@ function weatherPanel() {
   const hours = live && W.hours ? `<div class="wx-hours">${W.hours.map(h => `<div><span>${h.h}:00</span>${wIcon(codeIcon(h.code), 18)}<b class="num">${Math.round(h.temp)}°</b><small>mưa ${h.prob}%</small>${h.pm25 != null ? `<small>PM2.5 ${Math.round(h.pm25)}</small>` : ""}</div>`).join("")}</div>` : "";
   return `<div class="wx wx-${s}">
     <div class="wx-head"><div class="wx-ic">${wIcon(s, 28)}</div>
-      <div class="wx-b"><div class="wx-t">${live ? `<b class="num">${Math.round(W.temp)}°C</b>` : ""}${I.conds.map(c => `<span class="wx-badge">${WSTATE[c].label}</span>`).join("")}</div>${top}</div></div>
+      <div class="wx-b"><div class="wx-t">${live ? `<b class="num">${Math.round(liveNow() ? W.cur.temp : W.temp)}°C</b>` : ""}${I.conds.map(c => `<span class="wx-badge">${WSTATE[c].label}</span>`).join("")}</div>${top}</div></div>
     ${grid}${hours}
     <ul class="wx-adv">${I.conds.map(c => `<li>${WSTATE[c].advice}</li>`).join("")}</ul></div>
-    <div class="wx-src">${live || W.aq === "ok" ? `Nguồn: Open-Meteo (thời tiết, chất lượng không khí)${W.at ? " · lấy lúc " + W.at : ""} · ` : ""}Vị trí: ${esc(CONFIG.office.name)}</div>`;
+    <div class="wx-src">${live || W.aq === "ok" ? `Nguồn: Open-Meteo (thời tiết, chất lượng không khí)${W.at ? " · lấy lúc " + W.at : ""} · ` : ""}Vị trí: ${esc(CONFIG.office.name)} (${CONFIG.office.lat.toFixed(4)}, ${CONFIG.office.lon.toFixed(4)})</div>`;
 }
 function eatSheet(mode) {
   if (mode) R.mode = mode;
@@ -1676,7 +1691,7 @@ function eatCard() {
   const pct = c?.dist != null ? Math.max(6, Math.min(100, c.dist / 900 * 100)) : 0;
   return `<section class="sec tk tk-${st}" id="eatCard" aria-label="Gợi ý trưa nay">
     <button class="tk-main" data-eat="suggest" aria-label="Xem chi tiết gợi ý trưa nay">
-      <span class="tk-orb" aria-hidden="true">${wIcon(st, 16)}<b class="num">${live ? Math.round(W.temp) + "°" : "–"}</b></span>
+      <span class="tk-orb" aria-hidden="true">${wIcon(st, 16)}<b class="num">${live ? Math.round(liveNow() ? W.cur.temp : W.temp) + "°" : "–"}</b></span>
       <span class="tk-body">
         <span class="tk-lbl">Trưa nay ăn</span>
         <span class="tk-dish">${c ? esc(c.dish) : "Chưa có gợi ý"}</span>

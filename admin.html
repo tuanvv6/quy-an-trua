@@ -1037,7 +1037,7 @@ function savePay() {
 /* ---- Restaurant form ---- */
 const CATS = ["Bún", "Cơm", "Phở", "Cháo / Lòng", "Bánh mì", "Vịt quay", "Chả cá", "Lẩu", "Nhà hàng", "Khác"];
 /* ---- Vị trí quán: dán link Google Maps hoặc toạ độ ---- */
-const OFFICE = {name: "Số 1 Giang Văn Minh", lat: 21.03166, lon: 105.82729};
+const OFFICE = {name: "Số 1 Giang Văn Minh", lat: 21.03166, lon: 105.82729, ...((window.QUY_CONFIG || {}).OFFICE || {})};
 const WALK = 1.3, WALK_MPM = 75;
 const havM = (a, b, c, d) => { const R = 6371e3, r = x => x * Math.PI / 180, dl = r(c - a), dn = r(d - b); const h = Math.sin(dl / 2) ** 2 + Math.cos(r(a)) * Math.cos(r(c)) * Math.sin(dn / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
 function parseLoc(raw) {
