@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Nền phẳng full-bleed (iOS tự bo góc) -->
+  <rect width="1024" height="1024" fill="#FF6B3D"/>
+  <!-- Bóng phẳng dưới đĩa -->
+  <circle cx="512" cy="530" r="250" fill="#E4552A"/>
+  <!-- Đĩa -->
+  <circle cx="512" cy="512" r="250" fill="#FFFFFF"/>
+  <circle cx="512" cy="512" r="185" fill="#FFF3EB"/>
+  <circle cx="512" cy="512" r="185" fill="none" stroke="#FFD9C6" stroke-width="10"/>
+  <!-- Lá trang trí -->
+  <path d="M470 560 C470 480 530 440 600 440 C600 520 545 565 470 560 Z" fill="#2EB872"/>
+  <path d="M478 552 L585 452" stroke="#FFF3EB" stroke-width="10" stroke-linecap="round"/>
+  <!-- Nĩa -->
+  <g fill="#FFFFFF">
+    <rect x="138" y="190" width="16" height="160" rx="8"/>
+    <rect x="172" y="190" width="16" height="160" rx="8"/>
+    <rect x="206" y="190" width="16" height="160" rx="8"/>
+    <rect x="138" y="320" width="84" height="110" rx="42"/>
+    <rect x="165" y="400" width="30" height="440" rx="15"/>
+  </g>
+  <!-- Dao -->
+  <g fill="#FFFFFF">
+    <path d="M832 480 L832 205 Q832 186 849 195 Q906 238 902 400 Q900 455 884 480 Z"/>
+    <rect x="832" y="460" width="36" height="380" rx="18"/>
+  </g>
+</svg>
